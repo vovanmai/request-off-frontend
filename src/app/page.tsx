@@ -1,95 +1,76 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Test from '@/components/Test';
+import { get } from './actions'
+import {Metadata} from "next";
+// import { useEffect, useState } from "react";
 
-export default function Home() {
+import { Descriptions } from 'antd';
+import type { DescriptionsProps } from 'antd';
+import Link from "next/link";
+
+
+const items: DescriptionsProps['items'] = [
+  {
+    key: '1',
+    label: 'UserName',
+    children: 'Zhou Maomao',
+  },
+  {
+    key: '2',
+    label: 'Telephone',
+    children: '1810000000',
+  },
+  {
+    key: '5',
+    label: 'Address',
+    children: 'No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China',
+  },
+  {
+    key: '3',
+    label: 'Live',
+    children: 'Hangzhou, Zhejiang',
+  },
+  {
+    key: '4',
+    label: 'Remark',
+    children: 'empty',
+  },
+];
+
+const handle = async () => {
+  const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+  const data = await response.json()
+
+  return data
+}
+
+
+export const metadata: Metadata = {
+  title: "Show detail product",
+  description: "Show detail",
+};
+
+
+export default async function Home() {
+  // const [message, setMessage] = useState('initial message');
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     return await get()
+  //   }
+  //   fetchData().then((r) => {
+  //     setMessage(r)
+  //   })
+  // }, [])
+
+  const data = await handle()
+
+
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    <div>
+      <Link href="/about">Go to About page</Link>
+      <Link href="/login">Go to Login page</Link>
+      <Descriptions title="User Info" items={items} />
+    </div>
   );
 }
