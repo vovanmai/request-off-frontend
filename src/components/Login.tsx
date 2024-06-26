@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, Spin } from 'antd';
 import {
   LoginOutlined,
 } from '@ant-design/icons';
@@ -16,18 +16,40 @@ type FieldType = {
 
 export default function Login() {
   const [form] = Form.useForm();
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values);
+  const [isLoading, setIsLoading] = useState(false)
+
+  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+    setIsLoading(true)
+    const response = await fetch(process.env.API_URL + '/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values)
+    })
+    const content = await response.json()
+    if (response.ok) {
+
+    } else {
+      if (response.status === 401) {
+        console.log(content.message)
+      }
+    }
+    setIsLoading(false)
   };
-  
-  useEffect(() => {
-    form.getFieldsError()
-  }, [])
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo);
     
   };
+
+  const LoadingTemplate = () => {
+    return (
+      <span style={{paddingRight: 8}}>
+        <Spin />
+      </span>
+    )
+  }
   
   return (
     <Form
@@ -88,7 +110,8 @@ export default function Login() {
         size="large"
         shape="round"
       >
-        <LoginOutlined />Đăng nhập
+        { isLoading ? <Spin className="spin-in-button" style={{ marginRight: 8 }} /> : <LoginOutlined />}
+        Đăng nhập
       </Button>
     </Form.Item>
   </Form>

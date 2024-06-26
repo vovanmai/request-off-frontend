@@ -101,3 +101,7 @@ a {
     color-scheme: dark;
   }
 }
+
+.spin-in-button .ant-spin-dot-item {
+  background-color: white !important;
+}
