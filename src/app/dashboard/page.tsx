@@ -68,11 +68,7 @@ export default async function Home() {
 
   return (
     <div>
-      <Link href="/about">Go to About page</Link>
-      <Link href="/login">Go to Login page</Link>
-      {/*<Descriptions title="User Info" items={items} />*/}
-
-      <Test></Test>
+      This is dashboard page
     </div>
   );
 }

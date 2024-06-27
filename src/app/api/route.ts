@@ -1,7 +1,11 @@
-export async function GET() {
-  return Response.json({ message: 'OK' }, {
-    headers: {
-      'Set-Cookie': 'name=vovanmai99999'
-    }
+import {cookies} from "next/headers";
+
+export async function POST() {
+  cookies().set({
+    name: 'setco',
+    value: 'okok',
+    httpOnly: true,
+    path: '/',
   })
+  return Response.json({ message: 'OK' })
 }

@@ -4,8 +4,8 @@ import LoginComponent from '@/components/Login';
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Login",
-  description: "Login pape",
+  title: "Đăng nhập",
+  description: "Đăng nhập",
 };
 
 

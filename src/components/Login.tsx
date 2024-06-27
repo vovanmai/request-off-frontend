@@ -1,11 +1,17 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { useRouter } from 'next/navigation'
 import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input, Spin } from 'antd';
+import { Button, notification, Form, Input, Spin } from 'antd';
 import {
   LoginOutlined,
 } from '@ant-design/icons';
+
+import { setAccessTokenToServer } from '@/app/actions'
+
+import { AppContext } from './../context/AppProvider'
+
 
 type FieldType = {
   code?: string;
@@ -13,10 +19,12 @@ type FieldType = {
   password?: string;
 };
 
-
 export default function Login() {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
+  const { showNotification } = useContext(AppContext)
+
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     setIsLoading(true)
@@ -29,10 +37,17 @@ export default function Login() {
     })
     const content = await response.json()
     if (response.ok) {
-
+      const { data } = content
+      await setAccessTokenToServer(data.access_token)
+      showNotification.success({
+        message: content.message,
+      });
+      router.push('/dashboard');
     } else {
       if (response.status === 401) {
-        console.log(content.message)
+        showNotification.error({
+          message: content.message,
+        });
       }
     }
     setIsLoading(false)

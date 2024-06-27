@@ -2,16 +2,18 @@
 
 import React, { useEffect, useState } from 'react';
 import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, Divider } from 'antd';
 const { TextArea } = Input;
 import {
   LoginOutlined,
 } from '@ant-design/icons';
 
 type FieldType = {
+  name?: string;
   code?: string;
   email?: string;
   password?: string;
+  address?: string;
 };
 
 
@@ -41,7 +43,8 @@ export default function Login() {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
   >
-    <h3 style={{ borderBottom: "1px solid #f0f0f0", paddingBottom: 10, marginBottom: 35 }}>Thông tin công ty</h3>
+    <h3>Thông tin công ty</h3>
+    <Divider style={{ marginTop: 10 }} />
     <Form.Item<FieldType>
       label="Mã công ty"
       name="code"
@@ -81,7 +84,8 @@ export default function Login() {
       <TextArea />
     </Form.Item>
 
-    <h3 style={{ borderBottom: "1px solid #f0f0f0", paddingBottom: 10, marginBottom: 35 }}>Tài khoản supper admin</h3>
+    <h3>Tài khoản supper admin</h3>
+    <Divider style={{ marginTop: 10 }} />
     <Form.Item<FieldType>
       label="Địa chỉ email"
       name="email"
@@ -109,7 +113,7 @@ export default function Login() {
 
     <Form.Item<FieldType>
       label="Xác nhận mật khẩu"
-      name="password"
+      name="password_confirm"
       hasFeedback
       rules={[{ required: true, message: 'Vui lòng nhập mật khẩu.'}]}
     >

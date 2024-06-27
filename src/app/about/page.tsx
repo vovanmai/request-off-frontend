@@ -1,6 +1,7 @@
 'use client'
 import {Metadata} from "next";
 import { Button } from 'antd';
+import Link from "next/link";
 
 
 
@@ -21,6 +22,7 @@ export default function About() {
     <div>
       <Button type="primary" onClick={() => {handleSetCookie()}}>Primary Button</Button>
       <p>About Page</p>
+      <Link href="/">Go to Home</Link>
     </div>
   );
 }
