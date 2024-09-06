@@ -105,3 +105,8 @@ a {
 .spin-in-button .ant-spin-dot-item {
   background-color: white !important;
 }
+
+.ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,5 +1,5 @@
 import { Card } from 'antd';
-import RegisterComponent from '@/components/Register';
+// import RegisterComponent from '@/components/Register';
 
 import type { Metadata } from "next";
 
@@ -14,7 +14,7 @@ export default function Register() {
 
   return (
     <Card title={title} bordered={false} style={{ width: 700, margin: 'auto', marginTop: 200 }}>
-      <RegisterComponent/>
+      {/*<RegisterComponent/>*/}
     </Card>
   );
 }

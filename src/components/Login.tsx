@@ -1,14 +1,12 @@
 'use client'
 
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation'
 import type { FormProps } from 'antd';
-import { Button, notification, Form, Input, Spin } from 'antd';
+import { Button, Form, Input, Spin } from 'antd';
 import {
   LoginOutlined,
 } from '@ant-design/icons';
-
-import { setAccessTokenToServer } from '@/app/actions'
 
 import { AppContext } from './../context/AppProvider'
 
@@ -28,7 +26,7 @@ export default function Login() {
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     setIsLoading(true)
-    const response = await fetch(process.env.API_URL + '/api/login', {
+    const response = await fetch('/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,9 +35,7 @@ export default function Login() {
     })
     const content = await response.json()
     if (response.ok) {
-      const { data } = content
-      await setAccessTokenToServer(data.access_token)
-      showNotification.success({
+      showNotification?.success({
         message: content.message,
       });
       router.push('/dashboard');
@@ -55,16 +51,8 @@ export default function Login() {
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo);
-    
-  };
 
-  const LoadingTemplate = () => {
-    return (
-      <span style={{paddingRight: 8}}>
-        <Spin />
-      </span>
-    )
-  }
+  };
   
   return (
     <Form
@@ -119,7 +107,7 @@ export default function Login() {
     </Form.Item>
 
     <Form.Item wrapperCol={{ offset: 5, span: 19 }}>
-      <Button 
+      <Button
         type="primary"
         htmlType="submit"
         size="large"

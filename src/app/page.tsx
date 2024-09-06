@@ -1,11 +1,7 @@
-import Test from '@/components/Test';
-// import { get } from './actions'
-import {Metadata} from "next";
-// import { useEffect, useState } from "react";
-
-import { Descriptions } from 'antd';
+'use client'
 import type { DescriptionsProps } from 'antd';
 import Link from "next/link";
+import {useEffect} from "react";
 
 
 const items: DescriptionsProps['items'] = [
@@ -36,43 +32,24 @@ const items: DescriptionsProps['items'] = [
   },
 ];
 
-const handle = async () => {
-  const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
-  const data = await response.json()
-
-  return data
-}
-
-
-export const metadata: Metadata = {
-  title: "Show detail product",
-  description: "Show detail",
-};
-
-
-export default async function Home() {
-  // const [message, setMessage] = useState('initial message');
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     return await get()
-  //   }
-  //   fetchData().then((r) => {
-  //     setMessage(r)
-  //   })
-  // }, [])
-
-  const data = await handle()
+export default function Home() {
+  useEffect(() => {
+    // const registerFirebaseWorker = async () => {
+    //   if ('serviceWorker' in navigator) {
+    //     const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    //     await navigator.serviceWorker.ready;
+    //   }
+    // }
+    // registerFirebaseWorker()
+  }, [])
 
 
 
   return (
     <div>
-      <Link href="/about">Go to About page</Link>
-      <Link href="/login">Go to Login page</Link>
-      {/*<Descriptions title="User Info" items={items} />*/}
-
-      <Test></Test>
+      <Link href="/about">Go to About page</Link><br />
+      <Link href="/login">Go to Login page</Link><br />
+      <Link href="/dashboard">Go to Dashboard</Link><br />
     </div>
   );
 }

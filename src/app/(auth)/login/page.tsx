@@ -1,20 +1,16 @@
 import { Card } from 'antd';
 import LoginComponent from '@/components/Login';
 
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Đăng nhập",
-  description: "Đăng nhập",
+export const metadata = {
+    title: 'Đăng nhập',
+    description: 'Chào mừng bạn đến với ứng dụng.',
 };
-
 
 export default function Login() {
   const title = <h2 style={{ textAlign: "center" }}>Đăng nhập</h2>
-
   return (
-    <Card title={title} bordered={false} style={{ width: 500, margin: 'auto', marginTop: 200 }}>
-      <LoginComponent/>
-    </Card>
+      <Card title={title} bordered={false} style={{ width: 500, margin: 'auto', marginTop: 100 }}>
+          <LoginComponent/>
+      </Card>
   );
 }
