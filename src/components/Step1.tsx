@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation'
 import type { FormProps } from 'antd';
 import { Button, Form, Input, Spin } from 'antd';
 import {
+  LoadingOutlined,
   LoginOutlined,
+  MailOutlined,
 } from '@ant-design/icons';
 
 import { AppContext } from './../context/AppProvider'
@@ -26,27 +28,27 @@ export default function Login() {
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     setIsLoading(true)
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values)
-    })
-    const content = await response.json()
-    if (response.ok) {
-      showNotification?.success({
-        message: content.message,
-      });
-      router.push('/dashboard');
-    } else {
-      if (response.status === 401) {
-        showNotification.error({
-          message: content.message,
-        });
-      }
-    }
-    setIsLoading(false)
+    // const response = await fetch('/api/login', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(values)
+    // })
+    // const content = await response.json()
+    // if (response.ok) {
+    //   showNotification?.success({
+    //     message: content.message,
+    //   });
+    //   router.push('/dashboard');
+    // } else {
+    //   if (response.status === 401) {
+    //     showNotification.error({
+    //       message: content.message,
+    //     });
+    //   }
+    // }
+    // setIsLoading(false)
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -67,27 +69,12 @@ export default function Login() {
       autoComplete="off"
   >
     <Form.Item<FieldType>
-      label="Mã công ty"
-      name="code"
-      hasFeedback
-      rules={[
-        { required: true, message: 'Vui lòng nhập mã công ty.' },
-        { max: 20, message: 'Tối đa 20 ký tự.'}
-      ]}
-    >
-      <Input
-        size="large"
-      />
-    </Form.Item>
-
-    <Form.Item<FieldType>
       label="Email"
       name="email"
       hasFeedback
       rules={[
-        { required: true, message: 'Vui lòng nhập địa chỉ email.' },
+        { required: true, message: 'Vui lòng nhập.'},
         { type: 'email', message: 'Email không đúng định dạng.'},
-        { max: 50, message: 'Tối đa 50 ký tự.'}
       ]}
     >
        <Input
@@ -95,25 +82,15 @@ export default function Login() {
       />
     </Form.Item>
 
-    <Form.Item<FieldType>
-      label="Mật khẩu"
-      name="password"
-      hasFeedback
-      rules={[{ required: true, message: 'Vui lòng nhập mật khẩu.'}]}
-    >
-      <Input.Password
-        size="large"
-      />
-    </Form.Item>
-
-    <Form.Item wrapperCol={{ offset: 5, span: 19 }}>
+    <Form.Item>
       <Button
         type="primary"
         htmlType="submit"
         size="large"
         shape="round"
+        block
       >
-        { isLoading ? <Spin className="spin-in-button" style={{ marginRight: 8 }} /> : <LoginOutlined />}
+        { isLoading ? <Spin className="loading" indicator={<LoadingOutlined spin />} /> : <LoginOutlined />}
         Đăng nhập
       </Button>
     </Form.Item>

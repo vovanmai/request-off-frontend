@@ -6,7 +6,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div style={{ padding: '7px'}}>
+    <div style={{ padding: '0px 10px'}}>
       {children}
     </div>
   );

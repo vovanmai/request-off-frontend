@@ -54,7 +54,7 @@ const items: MenuProps['items'] = [
   label: `nav ${index + 1}`,
 }));
 
-const App: React.FC = () => {
+const DashboardLayoutUser: React.FC = () => {
   const {
       token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -129,4 +129,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default DashboardLayoutUser;

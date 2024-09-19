@@ -1,6 +1,6 @@
 'use client'
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "./globals.scss";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { ConfigProvider } from 'antd';
 
