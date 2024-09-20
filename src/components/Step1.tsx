@@ -7,10 +7,10 @@ import { Button, Form, Input, Spin } from 'antd';
 import {
   LoadingOutlined,
   LoginOutlined,
-  MailOutlined,
 } from '@ant-design/icons';
 
 import { AppContext } from './../context/AppProvider'
+import { loginByEmail } from '../api/auth'
 
 
 type FieldType = {
@@ -28,32 +28,22 @@ export default function Login() {
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     setIsLoading(true)
-    // const response = await fetch('/api/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(values)
-    // })
-    // const content = await response.json()
-    // if (response.ok) {
-    //   showNotification?.success({
-    //     message: content.message,
-    //   });
-    //   router.push('/dashboard');
-    // } else {
-    //   if (response.status === 401) {
-    //     showNotification.error({
-    //       message: content.message,
-    //     });
-    //   }
-    // }
-    // setIsLoading(false)
+    try {
+      const response = await loginByEmail(values)
+      if (response.data.length > 0) {
+        router.push('/login')
+      } else {
+        showNotification.error({
+          message: 'Email không tồn tại.'
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+    setIsLoading(false)
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-
+  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = async (errorInfo) => {
   };
   
   return (
@@ -89,6 +79,7 @@ export default function Login() {
         size="large"
         shape="round"
         block
+        disabled={isLoading}
       >
         { isLoading ? <Spin className="loading" indicator={<LoadingOutlined spin />} /> : <LoginOutlined />}
         Đăng nhập
