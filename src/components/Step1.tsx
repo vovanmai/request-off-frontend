@@ -10,7 +10,10 @@ import {
 } from '@ant-design/icons';
 
 import { AppContext } from './../context/AppProvider'
-import { loginByEmail } from '../api/auth'
+import { getCompanies } from '../api/auth'
+
+import { useAppDispatch } from '../store/hooks'
+import { setCompanies, setEmail } from '../store/user/auth/authSlice'
 
 
 type FieldType = {
@@ -24,13 +27,16 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const { showNotification } = useContext(AppContext)
+  const dispatch = useAppDispatch()
 
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     setIsLoading(true)
     try {
-      const response = await loginByEmail(values)
+      const response = await getCompanies(values)
       if (response.data.length > 0) {
+        dispatch(setCompanies(response.data))
+        dispatch(setEmail(values.email))
         router.push('/login')
       } else {
         showNotification.error({

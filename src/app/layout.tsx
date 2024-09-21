@@ -7,6 +7,8 @@ import { ConfigProvider } from 'antd';
 const inter = Inter({ subsets: ["latin"] });
 
 import AppProvider from './../context/AppProvider'
+import store from '../store/store'
+import { Provider } from 'react-redux'
 
 const theme = {
   token: {
@@ -27,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning={true}>
+      <Provider store={store}>
         <AntdRegistry>
           <ConfigProvider
             theme={theme}
@@ -36,6 +39,7 @@ export default function RootLayout({
             </AppProvider>
           </ConfigProvider>
         </AntdRegistry>
+      </Provider>
       </body>
 
     </html>

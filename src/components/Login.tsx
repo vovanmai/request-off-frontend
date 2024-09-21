@@ -1,14 +1,19 @@
 'use client'
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/navigation'
 import type { FormProps } from 'antd';
 import { Button, Form, Input, Spin } from 'antd';
+import Link from 'next/link'
 import {
   LoginOutlined,
+  EditOutlined
 } from '@ant-design/icons';
 
 import { AppContext } from './../context/AppProvider'
+
+import { useAppSelector } from '../store/hooks'
+import { selectCompanies, selectEmail } from "../store/user/auth/authSlice";
 
 
 type FieldType = {
@@ -22,7 +27,14 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const { showNotification } = useContext(AppContext)
+  const companies = useAppSelector(selectCompanies)
+  const email = useAppSelector(selectEmail)
 
+  useEffect(function () {
+    if (!email) {
+      router.push('/login/step-1')
+    }
+  }, [])
 
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     setIsLoading(true)
@@ -53,7 +65,11 @@ export default function Login() {
     console.log('Failed:', errorInfo);
 
   };
-  
+
+  const initialValues = {
+    email: email
+  }
+
   return (
     <Form
       form={form}
@@ -61,25 +77,11 @@ export default function Login() {
       labelCol={{ span: 24 }}
       wrapperCol={{ span: 24 }}
       style={{ maxWidth: 600 }}
-      initialValues={{ }}
+      initialValues={initialValues}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
   >
-    <Form.Item<FieldType>
-      label="Mã công ty"
-      name="code"
-      hasFeedback
-      rules={[
-        { required: true, message: 'Vui lòng nhập mã công ty.' },
-        { max: 20, message: 'Tối đa 20 ký tự.'}
-      ]}
-    >
-      <Input
-        size="large"
-      />
-    </Form.Item>
-
     <Form.Item<FieldType>
       label="Email"
       name="email"
@@ -91,7 +93,9 @@ export default function Login() {
       ]}
     >
        <Input
-        size="large"
+         disabled
+         size="large"
+         suffix={<Link href="/login/step-1"><EditOutlined /></Link>}
       />
     </Form.Item>
 
@@ -106,12 +110,13 @@ export default function Login() {
       />
     </Form.Item>
 
-    <Form.Item wrapperCol={{ offset: 5, span: 19 }}>
+    <Form.Item>
       <Button
         type="primary"
         htmlType="submit"
         size="large"
         shape="round"
+        block
       >
         { isLoading ? <Spin className="spin-in-button" style={{ marginRight: 8 }} /> : <LoginOutlined />}
         Đăng nhập
