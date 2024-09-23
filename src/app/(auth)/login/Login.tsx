@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button, Form, Input, Spin, Select } from 'antd'
 import Link from 'next/link'
@@ -8,18 +8,17 @@ import {
   LoginOutlined,
   EditOutlined
 } from '@ant-design/icons'
+import { toast } from 'react-toastify';
 
-import { login as requestLogin } from "../api/user/auth/index"
+import { login as requestLogin } from "@/api/user/auth/index"
 
-import { AppContext } from './../context/AppProvider'
-import { useAppSelector } from '../store/hooks'
-import { selectCompanies, selectEmail } from "../store/user/auth/authSlice"
+import { useAppSelector } from '@/store/hooks'
+import { selectCompanies, selectEmail } from "@/store/user/auth/authSlice"
 
 export default function Login() {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  const { showNotification } = useContext(AppContext)
   const email = useAppSelector(selectEmail)
   const companies = useAppSelector(selectCompanies).map((item: any) => {
     return {
@@ -32,18 +31,17 @@ export default function Login() {
     if (!email) {
       router.push('/login/email')
     }
-  }, [])
+  }, [email, router])
 
   const onFinish = async (values: any) => {
     try {
       setIsLoading(true)
       const response = await requestLogin(values)
       localStorage.setItem('access_token', response.data.access_token)
+      toast.success('Đăng nhập thành công!')
       router.push('/dashboard');
     } catch (error) {
-      showNotification.error({
-        message: error.message,
-      });
+      toast.error('Thông tin đăng nhập không đúng.');
     }
     setIsLoading(false)
   };

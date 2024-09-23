@@ -1,11 +1,14 @@
 'use client'
+import React from 'react';
 
-import {useEffect, useState} from "react";
+import withAuth from "../../hooks/withAuth";
 
-export default function Home() {
+const Home = () => {
   return (
     <div>
       This is dashboard page
     </div>
   );
 }
+
+export default withAuth(Home)

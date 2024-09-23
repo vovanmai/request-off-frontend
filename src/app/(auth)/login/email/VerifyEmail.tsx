@@ -2,24 +2,20 @@
 
 import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation'
-import type { FormProps } from 'antd';
 import { Button, Form, Input, Spin } from 'antd';
 import {
   LoadingOutlined,
   LoginOutlined,
 } from '@ant-design/icons';
+import { toast } from 'react-toastify';
+import { getCompanies } from '@/api/user/auth'
+import { useAppDispatch } from '@/store/hooks'
+import { setCompanies, setEmail } from '@/store/user/auth/authSlice'
 
-import { AppContext } from './../context/AppProvider'
-import { getCompanies } from '../api/user/auth'
-
-import { useAppDispatch } from '../store/hooks'
-import { setCompanies, setEmail } from '../store/user/auth/authSlice'
-
-export default function Login() {
+export default function VerifyEmail() {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  const { showNotification } = useContext(AppContext)
   const dispatch = useAppDispatch()
 
 
@@ -32,9 +28,7 @@ export default function Login() {
         dispatch(setEmail(values.email))
         router.push('/login')
       } else {
-        showNotification.error({
-          message: 'Email không tồn tại.'
-        })
+        toast.error('Email không tồn tại.')
       }
     } catch (error) {
       console.log(error)

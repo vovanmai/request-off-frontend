@@ -1,19 +1,13 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, ReactNode } from 'react';
 import {
-  AppstoreOutlined,
-  BarChartOutlined,
   CloudOutlined,
   ShopOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  LeftCircleOutlined,
-  RightCircleOutlined,
   UploadOutlined,
   UserOutlined,
-  LeftOutlined,
   VideoCameraOutlined,
-  RightOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu, theme, Button } from 'antd';
@@ -54,7 +48,7 @@ const items: MenuProps['items'] = [
   label: `nav ${index + 1}`,
 }));
 
-const DashboardLayoutUser: React.FC = () => {
+const DashboardLayoutUser: React.FC = ({ children }: { children?: ReactNode }) => {
   const {
       token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -110,6 +104,7 @@ const DashboardLayoutUser: React.FC = () => {
               borderRadius: borderRadiusLG,
             }}
           >
+            {children}
             <p>long content</p>
             {
               Array.from({ length: 100 }, (_, index) => (

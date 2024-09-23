@@ -1,20 +1,11 @@
-import { createContext, useEffect} from 'react'
-import { notification } from 'antd';
+import { createContext} from 'react'
 
-type NotificationContextType = {
-  showNotification: any;
-};
-
-export const AppContext = createContext<NotificationContextType>({
-  showNotification: null,
-});
+export const AppContext = createContext(null);
 
 export default function AppProvider ({children}: {children: any}) {
-  const [api, contextHolder] = notification.useNotification();
   return (
-    <AppContext.Provider value={{ showNotification: api }}>
+    <AppContext.Provider value={null}>
       {children}
-      {contextHolder}
     </AppContext.Provider>
   )
 }

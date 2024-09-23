@@ -10,6 +10,9 @@ import AppProvider from './../context/AppProvider'
 import store from '../store/store'
 import { Provider } from 'react-redux'
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const theme = {
   token: {
     // Seed Token
@@ -36,6 +39,7 @@ export default function RootLayout({
           >
             <AppProvider>
               {children}
+              <ToastContainer />
             </AppProvider>
           </ConfigProvider>
         </AntdRegistry>
