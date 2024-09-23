@@ -3,7 +3,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/navigation'
 import type { FormProps } from 'antd';
-import { Button, Form, Input, Spin } from 'antd';
+import { Button, Form, Input, Spin, Select } from 'antd';
 import Link from 'next/link'
 import {
   LoginOutlined,
@@ -11,32 +11,29 @@ import {
 } from '@ant-design/icons';
 
 import { AppContext } from './../context/AppProvider'
-
 import { useAppSelector } from '../store/hooks'
 import { selectCompanies, selectEmail } from "../store/user/auth/authSlice";
-
-
-type FieldType = {
-  code?: string;
-  email?: string;
-  password?: string;
-};
 
 export default function Login() {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const { showNotification } = useContext(AppContext)
-  const companies = useAppSelector(selectCompanies)
   const email = useAppSelector(selectEmail)
+  const companies = useAppSelector(selectCompanies).map((item: any) => {
+    return {
+      value: item.id,
+      label: item.name
+    }
+  })
 
   useEffect(function () {
     if (!email) {
-      router.push('/login/step-1')
+      router.push('/login/email')
     }
   }, [])
 
-  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+  const onFinish = async (values: any) => {
     setIsLoading(true)
     const response = await fetch('/api/login', {
       method: 'POST',
@@ -61,15 +58,16 @@ export default function Login() {
     setIsLoading(false)
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+  const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
-
   };
 
-  const initialValues = {
-    email: email
-  }
+  const companyId = companies[0] ? companies[0].value : null
 
+  const initialValues = {
+    email: email,
+    company_id: companyId
+  }
   return (
     <Form
       form={form}
@@ -82,7 +80,7 @@ export default function Login() {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
   >
-    <Form.Item<FieldType>
+    <Form.Item
       label="Email"
       name="email"
       hasFeedback
@@ -95,11 +93,25 @@ export default function Login() {
        <Input
          disabled
          size="large"
-         suffix={<Link href="/login/step-1"><EditOutlined /></Link>}
+         suffix={<Link href="/login/email"><EditOutlined /></Link>}
       />
     </Form.Item>
 
-    <Form.Item<FieldType>
+    <Form.Item
+      name="company_id"
+      label="Doanh nghiệp"
+      hasFeedback
+      rules={[{ required: true }]
+      }>
+      <Select
+        size="large"
+        showSearch
+        options={companies}
+      >
+      </Select>
+    </Form.Item>
+
+    <Form.Item
       label="Mật khẩu"
       name="password"
       hasFeedback

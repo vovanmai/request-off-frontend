@@ -15,13 +15,6 @@ import { getCompanies } from '../api/auth'
 import { useAppDispatch } from '../store/hooks'
 import { setCompanies, setEmail } from '../store/user/auth/authSlice'
 
-
-type FieldType = {
-  code?: string;
-  email?: string;
-  password?: string;
-};
-
 export default function Login() {
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false)
@@ -30,7 +23,7 @@ export default function Login() {
   const dispatch = useAppDispatch()
 
 
-  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+  const onFinish = async (values: any) => {
     setIsLoading(true)
     try {
       const response = await getCompanies(values)
@@ -49,7 +42,7 @@ export default function Login() {
     setIsLoading(false)
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = async (errorInfo) => {
+  const onFinishFailed = async (errorInfo: any) => {
   };
   
   return (
@@ -64,7 +57,7 @@ export default function Login() {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
   >
-    <Form.Item<FieldType>
+    <Form.Item
       label="Email"
       name="email"
       hasFeedback
