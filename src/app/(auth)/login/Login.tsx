@@ -9,6 +9,7 @@ import {
   EditOutlined
 } from '@ant-design/icons'
 import { toast } from 'react-toastify';
+import SpinLoading from '@/components/SpinLoading'
 
 import { login as requestLogin } from "@/api/user/auth/index"
 
@@ -71,7 +72,7 @@ export default function Login() {
     <Form.Item
       label="Email"
       name="email"
-      hasFeedback
+      // hasFeedback
       rules={[
         { required: true, message: 'Vui lòng nhập địa chỉ email.' },
         { type: 'email', message: 'Email không đúng định dạng.'},
@@ -88,7 +89,7 @@ export default function Login() {
     <Form.Item
       name="company_id"
       label="Doanh nghiệp"
-      hasFeedback
+      // hasFeedback
       rules={[{ required: true }]
       }>
       <Select
@@ -102,7 +103,7 @@ export default function Login() {
     <Form.Item
       label="Mật khẩu"
       name="password"
-      hasFeedback
+      // hasFeedback
       rules={[{ required: true, message: 'Vui lòng nhập mật khẩu.'}]}
     >
       <Input.Password
@@ -117,8 +118,9 @@ export default function Login() {
         size="large"
         shape="round"
         block
+        disabled={isLoading}
       >
-        { isLoading ? <Spin className="spin-in-button" style={{ marginRight: 8 }} /> : <LoginOutlined />}
+        { isLoading ? <SpinLoading/> : <LoginOutlined />}
         Đăng nhập
       </Button>
     </Form.Item>

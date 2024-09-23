@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, ReactNode } from 'react';
+import withAuth from "../../hooks/withAuth";
 import {
   CloudOutlined,
   ShopOutlined,
@@ -124,4 +125,4 @@ const DashboardLayoutUser: React.FC = ({ children }: { children?: ReactNode }) =
   );
 };
 
-export default DashboardLayoutUser;
+export default withAuth(DashboardLayoutUser);

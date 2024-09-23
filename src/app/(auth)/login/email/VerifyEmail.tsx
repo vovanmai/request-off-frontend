@@ -4,13 +4,13 @@ import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation'
 import { Button, Form, Input, Spin } from 'antd';
 import {
-  LoadingOutlined,
   LoginOutlined,
 } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 import { getCompanies } from '@/api/user/auth'
 import { useAppDispatch } from '@/store/hooks'
 import { setCompanies, setEmail } from '@/store/user/auth/authSlice'
+import SpinLoading from '@/components/SpinLoading'
 
 export default function VerifyEmail() {
   const [form] = Form.useForm();
@@ -54,7 +54,7 @@ export default function VerifyEmail() {
     <Form.Item
       label="Email"
       name="email"
-      hasFeedback
+      // hasFeedback
       rules={[
         { required: true, message: 'Vui lòng nhập.'},
         { type: 'email', message: 'Email không đúng định dạng.'},
@@ -74,7 +74,7 @@ export default function VerifyEmail() {
         block
         disabled={isLoading}
       >
-        { isLoading ? <Spin className="loading" indicator={<LoadingOutlined spin />} /> : <LoginOutlined />}
+        { isLoading ? <SpinLoading/> : <LoginOutlined />}
         Đăng nhập
       </Button>
     </Form.Item>

@@ -1,8 +1,6 @@
 'use client'
 import React from 'react';
 
-import withAuth from "../../hooks/withAuth";
-
 const Home = () => {
   return (
     <div>
@@ -11,4 +9,4 @@ const Home = () => {
   );
 }
 
-export default withAuth(Home)
+export default Home

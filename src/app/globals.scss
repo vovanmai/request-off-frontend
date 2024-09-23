@@ -116,7 +116,11 @@ a {
 }
 
 .ant-spin.loading {
-  color: white !important;
+  color: rgba(0, 0, 0, 0.25) !important;
+}
+
+.ant-form-item-label {
+  padding-bottom: 0px !important;
 }
 
 @media (min-width: 600px) {
