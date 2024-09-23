@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 
 import { AppContext } from './../context/AppProvider'
-import { getCompanies } from '../api/auth'
+import { getCompanies } from '../api/user/auth'
 
 import { useAppDispatch } from '../store/hooks'
 import { setCompanies, setEmail } from '../store/user/auth/authSlice'

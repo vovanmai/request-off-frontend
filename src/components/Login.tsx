@@ -1,18 +1,19 @@
 'use client'
 
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import type { FormProps } from 'antd';
-import { Button, Form, Input, Spin, Select } from 'antd';
+import { Button, Form, Input, Spin, Select } from 'antd'
 import Link from 'next/link'
 import {
   LoginOutlined,
   EditOutlined
-} from '@ant-design/icons';
+} from '@ant-design/icons'
+
+import { login as requestLogin } from "../api/user/auth/index"
 
 import { AppContext } from './../context/AppProvider'
 import { useAppSelector } from '../store/hooks'
-import { selectCompanies, selectEmail } from "../store/user/auth/authSlice";
+import { selectCompanies, selectEmail } from "../store/user/auth/authSlice"
 
 export default function Login() {
   const [form] = Form.useForm();
@@ -34,26 +35,15 @@ export default function Login() {
   }, [])
 
   const onFinish = async (values: any) => {
-    setIsLoading(true)
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values)
-    })
-    const content = await response.json()
-    if (response.ok) {
-      showNotification?.success({
-        message: content.message,
-      });
+    try {
+      setIsLoading(true)
+      const response = await requestLogin(values)
+      localStorage.setItem('access_token', response.data.access_token)
       router.push('/dashboard');
-    } else {
-      if (response.status === 401) {
-        showNotification.error({
-          message: content.message,
-        });
-      }
+    } catch (error) {
+      showNotification.error({
+        message: error.message,
+      });
     }
     setIsLoading(false)
   };
