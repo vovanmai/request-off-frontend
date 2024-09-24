@@ -5,7 +5,6 @@ export const appSlice = createSlice({
   name: 'app',
   initialState: {
     theme: {
-
     }
   },
   reducers: {

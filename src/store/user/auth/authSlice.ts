@@ -5,7 +5,7 @@ export const userAuthSlice = createSlice({
   name: 'userAuth',
   initialState: {
     companies: [],
-    email: null
+    email: null,
   },
   reducers: {
     setCompanies: (state, action) => {

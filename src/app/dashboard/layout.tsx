@@ -1,39 +1,15 @@
 'use client'
 import React, { useState, ReactNode } from 'react';
-import withAuth from "../../hooks/withAuth";
-import {
-  CloudOutlined,
-  ShopOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
+import withAuth from "@/hooks/withAuth";
 import type { MenuProps } from 'antd';
-import { Layout, Menu, theme, Button } from 'antd';
+import { Layout, theme } from 'antd';
 import LayoutHeader from '@/components/layout/Header'
 import LayoutSider from '@/components/layout/Sider'
+import LayoutFooter from '@/components/layout/Footer'
+type MenuItem = Required<MenuProps>['items'][number];
 
-const { Content, Footer } = Layout;
 
-const items: MenuProps['items'] = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  UploadOutlined,
-  UploadOutlined,
-  UploadOutlined,
-  UploadOutlined,
-  CloudOutlined,
-  CloudOutlined,
-  CloudOutlined,
-  ShopOutlined,
-].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `nav ${index + 1}`,
-}));
+const { Content } = Layout;
 
 const DashboardLayoutUser: React.FC = ({ children }: { children?: ReactNode }) => {
   const {
@@ -46,41 +22,32 @@ const DashboardLayoutUser: React.FC = ({ children }: { children?: ReactNode }) =
     SetMarginInlineStart(!collapsed ? 80 : 200)
   }
 
+  const menuItems: MenuItem[] = [
+    {
+      key: 'roles',
+      label: 'Quyền',
+    },
+    {
+      key: 'users',
+      label: 'Người dùng',
+    },
+  ];
+
   return (
     <Layout hasSider>
       <LayoutSider
         collapsed={collapsed}
-        menus={items}
+        menus={menuItems}
       />
       <Layout style={{ marginInlineStart: marginInlineStart }}>
         <LayoutHeader
           collapsed={collapsed}
           toggleSider={toggleSider}
         />
-        <Content style={{ margin: '25px 10px 0px 10px' }}>
-          <div
-            style={{
-              padding: 24,
-              textAlign: 'center',
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
-            {children}
-            <p>long content</p>
-            {
-              Array.from({ length: 100 }, (_, index) => (
-                <React.Fragment key={index}>
-                    {index % 20 === 0 && index ? 'more' : '...'}
-                    <br />
-                </React.Fragment>
-              ))
-            }
-          </div>
+        <Content style={{ margin: '25px 12px 0px 12px' }}>
+          {children}
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          XDCorp ©{new Date().getFullYear()} Created by Lionel Vo
-        </Footer>
+        <LayoutFooter/>
       </Layout>
     </Layout>
   );
