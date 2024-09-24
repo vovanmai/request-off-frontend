@@ -13,7 +13,7 @@ import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const theme = {
+const customTheme = {
   token: {
     // Seed Token
     colorPrimary: '#00b96b',
@@ -35,7 +35,7 @@ export default function RootLayout({
       <Provider store={store}>
         <AntdRegistry>
           <ConfigProvider
-            theme={theme}
+            theme={customTheme}
           >
             <AppProvider>
               {children}

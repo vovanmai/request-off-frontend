@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button, Form, Input, Spin, Select } from 'antd'
+import { Button, Form, Input, Select, theme } from 'antd'
 import Link from 'next/link'
 import {
   LoginOutlined,
@@ -18,6 +18,9 @@ import { selectCompanies, selectEmail } from "@/store/user/auth/authSlice"
 
 export default function Login() {
   const [form] = Form.useForm();
+  const {
+    token: { colorPrimary },
+  } = theme.useToken();
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const email = useAppSelector(selectEmail)
@@ -72,7 +75,6 @@ export default function Login() {
     <Form.Item
       label="Email"
       name="email"
-      // hasFeedback
       rules={[
         { required: true, message: 'Vui lòng nhập địa chỉ email.' },
         { type: 'email', message: 'Email không đúng định dạng.'},
@@ -82,14 +84,13 @@ export default function Login() {
        <Input
          disabled
          size="large"
-         suffix={<Link href="/login/email"><EditOutlined /></Link>}
+         suffix={<Link style={{ color: colorPrimary }} href="/login/email"><EditOutlined /></Link>}
       />
     </Form.Item>
 
     <Form.Item
       name="company_id"
       label="Doanh nghiệp"
-      // hasFeedback
       rules={[{ required: true }]
       }>
       <Select
@@ -103,7 +104,6 @@ export default function Login() {
     <Form.Item
       label="Mật khẩu"
       name="password"
-      // hasFeedback
       rules={[{ required: true, message: 'Vui lòng nhập mật khẩu.'}]}
     >
       <Input.Password

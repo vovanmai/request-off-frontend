@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/navigation'
 import { Button, Form, Input, Spin } from 'antd';
 import {
@@ -18,6 +18,12 @@ export default function VerifyEmail() {
   const router = useRouter()
   const dispatch = useAppDispatch()
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token')
+    if (accessToken) {
+      router.push('/dashboard')
+    }
+  }, [router])
 
   const onFinish = async (values: any) => {
     setIsLoading(true)
