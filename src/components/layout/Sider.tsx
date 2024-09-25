@@ -8,7 +8,7 @@ type MenuItem = Required<MenuProps>['items'][number]
 const LayoutSider = ({collapsed, menus}: {collapsed: boolean, menus: MenuItem[]}) => {
   const router = useRouter()
   const pathname = usePathname()
-  const [selectedMenu, setSelectedMenu] = useState([])
+  const [selectedMenu, setSelectedMenu] = useState<string[]>([])
 
   useEffect(() => {
     let currentRoute = pathname.replace('/dashboard/', '');

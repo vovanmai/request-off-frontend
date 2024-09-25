@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.scss";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { ConfigProvider } from 'antd';
+import viVN from 'antd/locale/vi_VN';
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +18,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const customTheme = {
   token: {
     // Seed Token
-    colorPrimary: '#00b96b',
+    // colorPrimary: '#00b96b',
+    colorPrimary: 'rgb(20 184 166)',
     // borderRadius: 2,
 
     // Alias Token
@@ -36,6 +39,7 @@ export default function RootLayout({
         <AntdRegistry>
           <ConfigProvider
             theme={customTheme}
+            locale={viVN}
           >
             <AppProvider>
               {children}

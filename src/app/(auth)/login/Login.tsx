@@ -43,7 +43,7 @@ export default function Login() {
       const response = await requestLogin(values)
       localStorage.setItem('access_token', response.data.access_token)
       toast.success('Đăng nhập thành công!')
-      router.push('/dashboard');
+      router.push('/dashboard/roles');
     } catch (error) {
       toast.error('Thông tin đăng nhập không đúng.');
     }

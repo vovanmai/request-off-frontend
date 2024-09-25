@@ -11,3 +11,7 @@ export function login(data: object) {
 export function getProfile() {
   return api.get('api/me');
 }
+
+export function logout() {
+  return api.get('api/logout');
+}
