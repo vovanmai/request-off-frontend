@@ -90,7 +90,7 @@ const ListRoles = () => {
     }
     const params = new URLSearchParams(paramsQuery);
     const queryString = params.toString();
-    router.replace(`/dashboard/roles?${queryString}`)
+    router.push(`/dashboard/roles?${queryString}`)
     console.log(searchData)
     fetchData({
       ...paramsQuery
@@ -136,7 +136,7 @@ const ListRoles = () => {
       name: String(values.name),
     });
     const queryString = params.toString();
-    router.replace(`/dashboard/roles?${queryString}`)
+    router.push(`/dashboard/roles?${queryString}`)
     fetchData(values)
   };
   const [expand, setExpand] = useState(false);
