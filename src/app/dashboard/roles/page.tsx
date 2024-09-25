@@ -1,5 +1,5 @@
 'use client'
-import { Card, Button, Table, Col, Form, Input, Select, Row, Space } from "antd";
+import {Card, Button, Table, Col, Form, Input, Select, Row, Space, theme } from "antd";
 import { PlusCircleOutlined, DownOutlined, SearchOutlined, ClearOutlined } from "@ant-design/icons";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
@@ -22,6 +22,7 @@ const ListRoles = () => {
   const searchParams = useSearchParams()
   const actions = (
     <Button
+      size="large"
       onClick={() => { router.push('/dashboard') }}
       type="primary"
     >
@@ -34,6 +35,9 @@ const ListRoles = () => {
   const [searchData, setSearchData] = useState({
     name: '',
   });
+  const {
+    token: { colorPrimary },
+  } = theme.useToken();
 
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
@@ -155,7 +159,7 @@ const ListRoles = () => {
               name="name"
               label="Tên"
             >
-              <Input />
+              <Input size="large" />
             </Form.Item>
           </Col>
           <Col xs={24} sm={12} md={8}>
@@ -163,7 +167,7 @@ const ListRoles = () => {
               name="created_at"
               label="Ngày tạo"
             >
-              <Input />
+              <Input size="large" />
             </Form.Item>
           </Col>
           <Col xs={24} sm={12} md={8}>
@@ -171,23 +175,24 @@ const ListRoles = () => {
               name="updated_at"
               label="Ngày cập nhật"
             >
-              <Input />
+              <Input size="large" />
             </Form.Item>
           </Col>
         </Row>
         <div style={{ textAlign: 'right' }}>
           <Space size="small">
-            <Button type="primary" htmlType="submit">
+            <Button size="large" type="primary" htmlType="submit">
               <SearchOutlined />Tìm kiếm
             </Button>
             <Button
+              size="large"
               onClick={() => {
                 form.resetFields();
               }}
             >
               <ClearOutlined />Xoá
             </Button>
-            <Button onClick={() => {
+            <Button size="large" style={{ color: colorPrimary }} onClick={() => {
               setExpand(!expand);
             }} type="link"><DownOutlined rotate={expand ? 180 : 0} /> Xem thêm</Button>
           </Space>
