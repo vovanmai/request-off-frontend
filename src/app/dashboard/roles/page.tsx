@@ -1,11 +1,12 @@
 'use client'
 import { Card, Button, Table } from "antd";
 import { PlusCircleOutlined } from "@ant-design/icons";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
 import type { SorterResult } from 'antd/es/table/interface';
 import { getRoles } from '@/api/user/role'
-import { useSearchParams } from 'next/navigation'
+import dayjs from 'dayjs'
+
 
 import type { GetProp, TableProps } from 'antd';
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
@@ -28,25 +29,24 @@ interface DataType {
 
 const ListRoles = () => {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const actions = (
     <Button
       onClick={() => { router.push('/dashboard') }}
       type="primary"
     >
-      <PlusCircleOutlined />Tạo
+      <PlusCircleOutlined />Tạo mới
     </Button>
   );
 
   const [data, setData] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const [tableParams, setTableParams] = useState<TableParams>({
-    pagination: {
-      current: 1,
-      pageSize: 10,
-    },
-  });
-  const searchParams = useSearchParams()
+  const [pagination, setPagination] = useState<TablePaginationConfig>({
+    current: 1,
+    pageSize: 10,
+    showSizeChanger: true,
+  })
 
   const fetchData = async (params = {}) => {
     setLoading(true);
@@ -54,13 +54,10 @@ const ListRoles = () => {
       const response = await getRoles(params)
       const { data } = response
       setData(data.data)
-      setTableParams({
-        ...tableParams,
-        pagination: {
-          current: data?.current_page,
-          pageSize: data?.per_page,
-          total: data.total
-        }
+      setPagination({
+        current: data?.current_page,
+        pageSize: data?.per_page,
+        total: data.total
       })
       setLoading(false)
     } catch (error) {
@@ -69,26 +66,34 @@ const ListRoles = () => {
   };
 
   useEffect(() => {
-    console.log(3333)
     const params = {
-      per_page: tableParams.pagination?.pageSize,
-      page: tableParams.pagination?.current,
+      name: searchParams.get('name'),
+      per_page: searchParams.get('per_page'),
+      page: searchParams.get('page'),
+      sort: searchParams.get('sort'),
+      order: searchParams.get('order'),
     }
     fetchData(params)
-  }, [
-    tableParams.pagination?.current,
-    tableParams.pagination?.pageSize,
-    tableParams?.sortOrder,
-    tableParams?.sortField,
-  ]);
+  }, [searchParams]);
 
   const handleTableChange: TableProps<DataType>['onChange'] = async (pagination, filters, sorter) => {
-    setTableParams({
-      pagination,
-      filters,
-      sortOrder: Array.isArray(sorter) ? undefined : sorter.order,
-      sortField: Array.isArray(sorter) ? undefined : sorter.field,
+    setPagination(pagination)
+    console.log(pagination)
+    const isSorterArray = Array.isArray(sorter);
+    const sortField = isSorterArray ? sorter[0]?.field : sorter?.field;
+    const sortOrder = isSorterArray ? sorter[0]?.order : sorter?.order;
+
+    const sort = sortField ? sortField : '';
+    let order = sortOrder ? sortOrder : '';
+    order = order ? (order === 'ascend' ? 'asc' : 'desc') : ''
+    const params = new URLSearchParams({
+      page: String(pagination.current),
+      per_page: String(pagination.pageSize),
+      sort: String(sort),
+      order: String(order),
     });
+    const queryString = params.toString();
+    router.push(`/dashboard/roles?${queryString}`)
   }
 
   const columns: ColumnsType<DataType> = [
@@ -108,12 +113,14 @@ const ListRoles = () => {
       dataIndex: 'created_at',
       sorter: true,
       width: '30%',
+      render: (text: string) => dayjs(text).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: 'Ngày cập nhật',
       dataIndex: 'updated_at',
       sorter: true,
       width: '30%',
+      render: (text: string) => dayjs(text).format('YYYY-MM-DD HH:mm:ss'),
     },
   ];
 
@@ -125,7 +132,7 @@ const ListRoles = () => {
         columns={columns}
         rowKey={(record) => record.id}
         dataSource={data}
-        pagination={tableParams.pagination}
+        pagination={pagination}
         loading={loading}
         onChange={handleTableChange}
       />
@@ -133,4 +140,10 @@ const ListRoles = () => {
   );
 }
 
-export default ListRoles
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading roles...</div>}>
+      <ListRoles />
+    </Suspense>
+  );
+}

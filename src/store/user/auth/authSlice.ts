@@ -6,6 +6,7 @@ export const userAuthSlice = createSlice({
   initialState: {
     companies: [],
     email: null,
+    currentUser: null,
   },
   reducers: {
     setCompanies: (state, action) => {
@@ -14,12 +15,16 @@ export const userAuthSlice = createSlice({
     setEmail: (state, action) => {
       state.email = action.payload
     },
+    setCurrentUser: (state, action) => {
+      state.currentUser = action.payload
+    },
   },
 })
 
-export const { setCompanies, setEmail } = userAuthSlice.actions
+export const { setCompanies, setEmail, setCurrentUser } = userAuthSlice.actions
 
 export const selectCompanies = (state: RootState) => state.userAuth.companies
 export const selectEmail = (state: RootState) => state.userAuth.email
+export const selectCurrentUser = (state: RootState) => state.userAuth.currentUser
 
 export default userAuthSlice.reducer

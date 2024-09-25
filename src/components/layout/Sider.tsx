@@ -1,12 +1,22 @@
 'use client'
-import { MenuProps, Layout, Menu} from "antd";
-const { Sider } = Layout;
-import React, { CSSProperties } from "react";
-import { useRouter } from "next/navigation";
-type MenuItem = Required<MenuProps>['items'][number];
+import { Layout, Menu, MenuProps } from "antd"
+const { Sider } = Layout
+import React, {CSSProperties, useEffect, useState} from "react"
+import { useRouter, usePathname } from "next/navigation"
+type MenuItem = Required<MenuProps>['items'][number]
 
 const LayoutSider = ({collapsed, menus}: {collapsed: boolean, menus: MenuItem[]}) => {
   const router = useRouter()
+  const pathname = usePathname()
+  const [selectedMenu, setSelectedMenu] = useState([])
+
+  useEffect(() => {
+    let currentRoute = pathname.replace('/dashboard/', '');
+    currentRoute = currentRoute.replace(/^\/|\/$/g, '');
+    setSelectedMenu([currentRoute])
+  }, [pathname])
+
+
   const siderStyle: CSSProperties = {
     height: '100vh',
     position: 'fixed',
@@ -23,13 +33,13 @@ const LayoutSider = ({collapsed, menus}: {collapsed: boolean, menus: MenuItem[]}
     scrollbarColor: 'unset',
   };
 
-  const selectMenu = (menuInfo) => {
-    const routes = {
+  const selectMenu: MenuProps['onSelect'] = (menuInfo) => {
+    const routes: { [key: string]: string } = {
       'users': '/dashboard/users',
       'roles': '/dashboard/roles',
     }
 
-    const route = routes[menuInfo.key]
+    const route = menuInfo?.key && routes[menuInfo.key] ? routes[menuInfo.key] : null;
 
     if (route) {
       router.push(route)
@@ -45,9 +55,9 @@ const LayoutSider = ({collapsed, menus}: {collapsed: boolean, menus: MenuItem[]}
         <Menu
           mode="inline"
           theme="light"
-          defaultSelectedKeys={['']}
+          selectedKeys={selectedMenu}
           items={menus}
-          onClick={(menuInfo) => {selectMenu(menuInfo)}}
+          onSelect={selectMenu}
         />
       </div>
     </Sider>

@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+import { toast } from 'react-toastify';
 export const getAccessToken = () => {
   if (localStorage.getItem('access_token')) {
     return `Bearer ${localStorage.getItem('access_token')}`
@@ -30,6 +31,14 @@ axiosClient.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    const status = error.response && error.response.status
+    switch (status) {
+      case 401:
+        localStorage.removeItem('access_token')
+        // toast.error('Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.')
+        window.location.href = '/login/email'
+    }
+
     return Promise.reject(error);
   }
 );

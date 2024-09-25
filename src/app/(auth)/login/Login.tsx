@@ -8,7 +8,7 @@ import {
   LoginOutlined,
   EditOutlined
 } from '@ant-design/icons'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 import SpinLoading from '@/components/SpinLoading'
 
 import { login as requestLogin } from "@/api/user/auth/index"

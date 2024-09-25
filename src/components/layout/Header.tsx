@@ -1,13 +1,17 @@
 'use client'
-import {Button, Spin, theme, Layout} from "antd";
+import { Button, theme, Layout } from "antd";
 const { Header } = Layout;
 import { MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import React from "react";
+import { useAppSelector } from '@/store/hooks'
+import { selectCurrentUser } from "@/store/user/auth/authSlice";
 
 const LayoutHeader = ({collapsed, toggleSider}: {collapsed: boolean, toggleSider: Function}) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  const currentUser = useAppSelector(selectCurrentUser)
   return (
     <Header style={{
       position: 'sticky',
@@ -31,6 +35,7 @@ const LayoutHeader = ({collapsed, toggleSider}: {collapsed: boolean, toggleSider
               height: 35,
             }}
           />
+          {currentUser?.name}
         </div>
       </div>
     </Header>

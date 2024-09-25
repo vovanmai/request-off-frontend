@@ -7,3 +7,7 @@ export function getCompanies(params: object) {
 export function login(data: object) {
   return api.post('api/login', data);
 }
+
+export function getProfile() {
+  return api.get('api/me');
+}
