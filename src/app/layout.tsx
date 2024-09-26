@@ -27,6 +27,11 @@ const customTheme = {
   },
 }
 
+import 'dayjs/locale/vi'
+const locale = {
+  ...viVN,
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -39,7 +44,7 @@ export default function RootLayout({
         <AntdRegistry>
           <ConfigProvider
             theme={customTheme}
-            locale={viVN}
+            locale={locale}
           >
             <AppProvider>
               {children}
