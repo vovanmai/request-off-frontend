@@ -34,17 +34,18 @@ const LayoutHeader = ({collapsed, toggleSider}: {collapsed: boolean, toggleSider
     },
   ];
 
-  const getProfile = async () => {
-    try {
-      const response = await requestProfile()
-      dispatch(setCurrentUser(response?.data))
-    } catch (error) {
 
-    }
-  }
   useEffect(() => {
+    const getProfile = async () => {
+      try {
+        const response = await requestProfile()
+        dispatch(setCurrentUser(response?.data))
+      } catch (error) {
+
+      }
+    }
     getProfile()
-  }, [])
+  }, [dispatch])
 
   const logout = async () => {
     try {
@@ -57,7 +58,7 @@ const LayoutHeader = ({collapsed, toggleSider}: {collapsed: boolean, toggleSider
     }
   }
 
-  const handleMenuClick = async (menuInfo) => {
+  const handleMenuClick = async (menuInfo: { key: string }) => {
     switch (menuInfo.key) {
       case 'profile':
         break;

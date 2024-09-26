@@ -1,11 +1,13 @@
 'use client'
-import {Card, Button, Table } from "antd"
-import { PlusCircleOutlined } from "@ant-design/icons"
+import {Card, Button, Table, Breadcrumb } from "antd"
+import { PlusCircleOutlined, HomeOutlined } from "@ant-design/icons"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState, Suspense } from "react"
+import { useEffect, useState, Suspense, useCallback } from "react"
 import { getRoles } from '@/api/user/role'
 import dayjs from 'dayjs'
 import Search from "./Search"
+import { removeEmptyFields } from "@/helper/common"
+import qs from 'qs'
 
 import type { GetProp, TableProps } from 'antd';
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
@@ -31,57 +33,69 @@ const ListRoles = () => {
     </Button>
   );
 
-  const [data, setData] = useState<DataType[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  type SearchData = {
+  type SearchDataType = {
     name?: string,
     created_at_from?: string,
     created_at_to?: string,
     updated_at_from?: string,
     updated_at_to?: string,
   }
-  const [searchData, setSearchData] = useState<SearchData>({
-    name: '',
-    created_at_from: '',
-    created_at_to: '',
-    updated_at_from: '',
-    updated_at_to: '',
-  });
+
+  type SortDataType = {
+    sort?: string,
+    order?: string,
+  }
+
+  type QueryParamType = SearchDataType & SortDataType & {
+    page?: number,
+    per_page?: number,
+  }
+
+  const searchData: SearchDataType = {
+    name: searchParams.get('name') || '',
+    created_at_from: searchParams.get('created_at_from') || '',
+    created_at_to: searchParams.get('created_at_to') || '',
+    updated_at_from: searchParams.get('updated_at_from') || '',
+    updated_at_to: searchParams.get('updated_at_to') || '',
+  }
+
+  const [queryParams, setQueryParams] = useState<QueryParamType>({
+    ...searchData,
+    sort: searchParams.get('sort') || '',
+    order: searchParams.get('order') || '',
+    page: 1,
+    per_page: 10,
+  })
+
+  const [data, setData] = useState<DataType[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: 10,
   })
 
-  const fetchData = async (params = {}) => {
+  const fetchData = useCallback(async (params = {}) => {
     setLoading(true);
     try {
-      const response = await getRoles(params)
-      const { data } = response
-      setData(data.data)
+      const response = await getRoles(removeEmptyFields(params));
+      const { data: responseData } = response;
+      setData(responseData.data);
       setPagination({
-        current: data?.current_page,
-        pageSize: data?.per_page,
-        total: data.total
-      })
-      setLoading(false)
+        current: responseData.current_page,
+        pageSize: responseData.per_page,
+        total: responseData.total,
+      });
     } catch (error) {
-      setLoading(false)
+      console.error('Fetch error:', error);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    const params = {
-      name: searchParams.get('name'),
-      per_page: searchParams.get('per_page'),
-      page: searchParams.get('page'),
-      sort: searchParams.get('sort'),
-      order: searchParams.get('order'),
-    }
-
-    fetchData(params)
-  }, []);
+    fetchData(queryParams)
+  }, [fetchData, queryParams]);
 
   const handleTableChange: TableProps<DataType>['onChange'] = async (pagination, filters, sorter) => {
     setPagination(pagination)
@@ -89,36 +103,34 @@ const ListRoles = () => {
     const sortField = isSorterArray ? sorter[0]?.field : sorter?.field;
     const sortOrder = isSorterArray ? sorter[0]?.order : sorter?.order;
 
-    const sort = sortField ? sortField : '';
+    const sort = typeof sortField === 'string' ? sortField : '';
     let order = sortOrder ? sortOrder : '';
     order = order ? (order === 'ascend' ? 'asc' : 'desc') : ''
-    const paramsQuery = {
-      name: String(searchData.name),
-      page: String(pagination.current),
-      per_page: String(pagination.pageSize),
-      sort: String(sort),
-      order: String(order),
+
+    const params = {
+      ...queryParams,
+      page: pagination.current,
+      per_page: pagination.pageSize,
+      sort: sort,
+      order: order,
     }
-    const params = new URLSearchParams(paramsQuery);
-    const queryString = params.toString()
+    console.log(params)
+    setQueryParams(params)
+    const queryString = qs.stringify(removeEmptyFields(params));
     router.push(`/dashboard/roles?${queryString}`)
-    await fetchData({
-      ...paramsQuery
-    })
   }
 
-  const onSearch = async (data) => {
-    setSearchData(data)
-    const params = new URLSearchParams({
-      name: String(data.name),
-      created_at_from: String(data.created_at_from),
-      created_at_to: String(data.created_at_to),
-      updated_at_from: String(data.updated_at_from),
-      updated_at_to: String(data.updated_at_to),
-    });
-    const queryString = params.toString();
+  const onSearch = async (data: any) => {
+    const params = {
+      name: data.name,
+      created_at_from: data.created_at_from,
+      created_at_to: data.created_at_to,
+      updated_at_from: data.updated_at_from,
+      updated_at_to: data.updated_at_to,
+    }
+    setQueryParams(params)
+    const queryString = qs.stringify(removeEmptyFields(params));
     router.push(`/dashboard/roles?${queryString}`)
-    await fetchData(data)
   }
 
   const columns: ColumnsType<DataType> = [
@@ -149,22 +161,40 @@ const ListRoles = () => {
     },
   ];
 
+  const breadcrumbItems = [
+    {
+      href: '/dashboard',
+      title: <HomeOutlined />,
+    },
+    {
+      title: 'Quyền',
+    },
+  ]
+
   return (
-    <Card title="Quyền" bordered={false} extra={actions}>
-      <Search
-        onSearch={onSearch}
+    <div>
+      <Breadcrumb
+        items={breadcrumbItems}
+        style={{ marginBottom: 10 }}
       />
-      <Table
-        bordered
-        columns={columns}
-        rowKey={(record) => record.id}
-        dataSource={data}
-        pagination={pagination}
-        loading={loading}
-        onChange={handleTableChange}
-        scroll={{ x: 'max-content', y: 400 }}
-      />
-    </Card>
+      <Card title="Quyền" bordered={false} extra={actions}>
+        <Search
+          onSearch={onSearch}
+          resetForm={() => { setQueryParams({}) }}
+          formData={searchData}
+        />
+        <Table
+          bordered
+          columns={columns}
+          rowKey={(record) => record.id}
+          dataSource={data}
+          pagination={pagination}
+          loading={loading}
+          onChange={handleTableChange}
+          scroll={{ x: 'max-content', y: 400 }}
+        />
+      </Card>
+    </div>
   );
 }
 

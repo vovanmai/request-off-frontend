@@ -1,7 +1,14 @@
 import React from 'react';
 import { Space, DatePicker, Input, Form } from 'antd';
 
-const RangeDatePicker = ({ fromName, toName, fromPlaceholder, toPlaceholder }) => {
+type PropsType = {
+  fromName?: string,
+  toName?: string,
+  fromPlaceholder?: string,
+  toPlaceholder?: string,
+}
+
+const RangeDatePicker = ({ fromName, toName, fromPlaceholder, toPlaceholder }: PropsType) => {
   return (
     <Space.Compact block>
       <Form.Item

@@ -44,7 +44,7 @@ const DashboardLayoutUser: React.FC = ({ children }: { children?: ReactNode }) =
           collapsed={collapsed}
           toggleSider={toggleSider}
         />
-        <Content style={{ margin: '25px 12px 0px 12px' }}>
+        <Content style={{ margin: '10px 12px 0px 12px' }}>
           {children}
         </Content>
         <LayoutFooter/>
