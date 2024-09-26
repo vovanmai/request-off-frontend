@@ -114,7 +114,6 @@ const ListRoles = () => {
       sort: sort,
       order: order,
     }
-    console.log(params)
     setQueryParams(params)
     const queryString = qs.stringify(removeEmptyFields(params));
     router.push(`/dashboard/roles?${queryString}`)
