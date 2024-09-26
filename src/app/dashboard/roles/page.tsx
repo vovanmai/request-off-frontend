@@ -38,11 +38,15 @@ const ListRoles = () => {
     name?: string,
     created_at_from?: string,
     created_at_to?: string,
+    updated_at_from?: string,
+    updated_at_to?: string,
   }
   const [searchData, setSearchData] = useState<SearchData>({
     name: '',
     created_at_from: '',
     created_at_to: '',
+    updated_at_from: '',
+    updated_at_to: '',
   });
 
   const [pagination, setPagination] = useState<TablePaginationConfig>({
@@ -106,14 +110,15 @@ const ListRoles = () => {
   const onSearch = async (data) => {
     setSearchData(data)
     const params = new URLSearchParams({
-      name: String(searchData.name),
-      created_at_from: String(searchData.created_at_from),
-      created_at_to: String(searchData.created_at_to),
+      name: String(data.name),
+      created_at_from: String(data.created_at_from),
+      created_at_to: String(data.created_at_to),
+      updated_at_from: String(data.updated_at_from),
+      updated_at_to: String(data.updated_at_to),
     });
     const queryString = params.toString();
-    console.log(queryString)
     router.push(`/dashboard/roles?${queryString}`)
-    await fetchData(searchData)
+    await fetchData(data)
   }
 
   const columns: ColumnsType<DataType> = [

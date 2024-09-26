@@ -3,6 +3,7 @@ import { ClearOutlined, DownOutlined, SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import dayjs from "dayjs"
+import RangeDatePicker from '@/components/RangeDatePicker'
 
 const Search = ({ onSearch }) => {
   const {
@@ -23,6 +24,14 @@ const Search = ({ onSearch }) => {
     if (values.created_at_to) {
       values.created_at_to = dayjs(values.created_at_to).format('YYYY-MM-DD HH:mm:ss')
     }
+
+    if (values.updated_at_from) {
+      values.updated_at_from = dayjs(values.updated_at_from).format('YYYY-MM-DD HH:mm:ss')
+    }
+
+    if (values.updated_at_to) {
+      values.updated_at_to = dayjs(values.updated_at_to).format('YYYY-MM-DD HH:mm:ss')
+    }
     onSearch(values)
   };
 
@@ -30,10 +39,15 @@ const Search = ({ onSearch }) => {
     let createdAtFrom = searchParams.get('created_at_from')
     let createdAtTo = searchParams.get('created_at_to')
 
+    let updatedAtFrom = searchParams.get('updated_at_from')
+    let updatedAtTo = searchParams.get('updated_at_to')
+
     form.setFieldsValue({
       name: searchParams.get('name') || '',
       created_at_from: createdAtFrom ? dayjs(createdAtFrom) : '',
       created_at_to: createdAtTo ? dayjs(createdAtTo) : '',
+      updated_at_from: updatedAtFrom ? dayjs(updatedAtFrom) : '',
+      updated_at_to: updatedAtTo ? dayjs(updatedAtTo) : '',
     });
   }, [])
 
@@ -47,7 +61,7 @@ const Search = ({ onSearch }) => {
       onFinish={onSubmit}
     >
       <Row gutter={30}>
-        <Col xs={24} sm={12} md={7}>
+        <Col xs={24} sm={12} md={6}>
           <Form.Item
             name="name"
             label="Tên"
@@ -55,53 +69,21 @@ const Search = ({ onSearch }) => {
             <Input size="large" />
           </Form.Item>
         </Col>
-        <Col xs={24} sm={12} md={10}>
+        <Col xs={24} sm={12} md={9}>
           <Form.Item
             label="Ngày tạo"
           >
-            <Space.Compact block>
-              <Form.Item
-                name="created_at_from"
-                noStyle
-              >
-                <DatePicker
-                  style={{ width: '100%'}}
-                  size="large"
-                  showTime
-                  placeholder="Bắt đầu"
-                />
-              </Form.Item>
-              <Input
-                size={"large"}
-                style={{
-                  width: '50px',
-                  borderLeft: 0,
-                  borderRight: 0,
-                  pointerEvents: 'none',
-                }}
-                placeholder="~"
-                disabled
-              />
-              <Form.Item
-                name="created_at_to"
-                noStyle
-              >
-                <DatePicker
-                  style={{ width: '100%'}}
-                  size="large"
-                  showTime
-                  placeholder="Kết thúc"
-                />
-              </Form.Item>
-            </Space.Compact>
+            <RangeDatePicker/>
           </Form.Item>
         </Col>
-        <Col xs={24} sm={12} md={7}>
+        <Col xs={24} sm={12} md={9}>
           <Form.Item
-            name="updated_at"
             label="Ngày cập nhật"
           >
-            <Input size="large" />
+            <RangeDatePicker
+              fromName="updated_at_from"
+              toName="updated_at_to"
+            />
           </Form.Item>
         </Col>
       </Row>
