@@ -51,13 +51,13 @@ const ListRoles = () => {
     per_page?: number,
   }
 
-  const searchData: SearchDataType = {
+  const [searchData] = useState<SearchDataType>({
     name: searchParams.get('name') || '',
     created_at_from: searchParams.get('created_at_from') || '',
     created_at_to: searchParams.get('created_at_to') || '',
     updated_at_from: searchParams.get('updated_at_from') || '',
     updated_at_to: searchParams.get('updated_at_to') || '',
-  }
+  })
 
   const [queryParams, setQueryParams] = useState<QueryParamType>({
     ...searchData,
