@@ -75,7 +75,7 @@ const ListRoles = () => {
     pageSize: 10,
   })
 
-  const fetchData = useCallback(async (params = {}) => {
+  const fetchData = async (params = {}) => {
     setLoading(true);
     try {
       const response = await getRoles(removeEmptyFields(params));
@@ -91,11 +91,11 @@ const ListRoles = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }
 
   useEffect(() => {
     fetchData(queryParams)
-  }, [fetchData, queryParams]);
+  }, [queryParams]);
 
   const handleTableChange: TableProps<DataType>['onChange'] = async (pagination, filters, sorter) => {
     setPagination(pagination)
