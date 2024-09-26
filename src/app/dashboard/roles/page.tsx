@@ -1,10 +1,11 @@
 'use client'
-import {Card, Button, Table, Col, Form, Input, Select, Row, Space, theme } from "antd";
-import { PlusCircleOutlined, DownOutlined, SearchOutlined, ClearOutlined } from "@ant-design/icons";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState, Suspense } from "react";
+import {Card, Button, Table } from "antd"
+import { PlusCircleOutlined } from "@ant-design/icons"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState, Suspense } from "react"
 import { getRoles } from '@/api/user/role'
 import dayjs from 'dayjs'
+import Search from "./Search"
 
 import type { GetProp, TableProps } from 'antd';
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
@@ -32,12 +33,17 @@ const ListRoles = () => {
 
   const [data, setData] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(false);
-  const [searchData, setSearchData] = useState({
+
+  type SearchData = {
+    name?: string,
+    created_at_from?: string,
+    created_at_to?: string,
+  }
+  const [searchData, setSearchData] = useState<SearchData>({
     name: '',
+    created_at_from: '',
+    created_at_to: '',
   });
-  const {
-    token: { colorPrimary },
-  } = theme.useToken();
 
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
@@ -69,9 +75,6 @@ const ListRoles = () => {
       sort: searchParams.get('sort'),
       order: searchParams.get('order'),
     }
-    form.setFieldsValue({
-      name: searchParams.get('name') || '',
-    });
 
     fetchData(params)
   }, []);
@@ -93,12 +96,24 @@ const ListRoles = () => {
       order: String(order),
     }
     const params = new URLSearchParams(paramsQuery);
-    const queryString = params.toString();
+    const queryString = params.toString()
     router.push(`/dashboard/roles?${queryString}`)
-    console.log(searchData)
-    fetchData({
+    await fetchData({
       ...paramsQuery
     })
+  }
+
+  const onSearch = async (data) => {
+    setSearchData(data)
+    const params = new URLSearchParams({
+      name: String(searchData.name),
+      created_at_from: String(searchData.created_at_from),
+      created_at_to: String(searchData.created_at_to),
+    });
+    const queryString = params.toString();
+    console.log(queryString)
+    router.push(`/dashboard/roles?${queryString}`)
+    await fetchData(searchData)
   }
 
   const columns: ColumnsType<DataType> = [
@@ -129,75 +144,11 @@ const ListRoles = () => {
     },
   ];
 
-  const [form] = Form.useForm()
-  const formStyle: React.CSSProperties = {
-    maxWidth: 'none',
-    padding: '0px 0px 24px 0px',
-  };
-  const onSearch = (values: any) => {
-    setSearchData(values)
-    const params = new URLSearchParams({
-      name: String(values.name),
-    });
-    const queryString = params.toString();
-    router.push(`/dashboard/roles?${queryString}`)
-    fetchData(values)
-  };
-  const [expand, setExpand] = useState(false);
-
   return (
     <Card title="Quyền" bordered={false} extra={actions}>
-      <Form form={form}
-        layout="vertical"
-        style={formStyle}
-        onFinish={onSearch}
-        initialValues={searchData}
-      >
-        <Row gutter={30}>
-          <Col xs={24} sm={12} md={8}>
-            <Form.Item
-              name="name"
-              label="Tên"
-            >
-              <Input size="large" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={12} md={8}>
-            <Form.Item
-              name="created_at"
-              label="Ngày tạo"
-            >
-              <Input size="large" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={12} md={8}>
-            <Form.Item
-              name="updated_at"
-              label="Ngày cập nhật"
-            >
-              <Input size="large" />
-            </Form.Item>
-          </Col>
-        </Row>
-        <div style={{ textAlign: 'right' }}>
-          <Space size="small">
-            <Button size="large" type="primary" htmlType="submit">
-              <SearchOutlined />Tìm kiếm
-            </Button>
-            <Button
-              size="large"
-              onClick={() => {
-                form.resetFields();
-              }}
-            >
-              <ClearOutlined />Xoá
-            </Button>
-            <Button size="large" style={{ color: colorPrimary }} onClick={() => {
-              setExpand(!expand);
-            }} type="link"><DownOutlined rotate={expand ? 180 : 0} /> Xem thêm</Button>
-          </Space>
-        </div>
-      </Form>
+      <Search
+        onSearch={onSearch}
+      />
       <Table
         bordered
         columns={columns}
