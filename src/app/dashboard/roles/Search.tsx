@@ -34,7 +34,7 @@ const Search = ({ formData, onSearch, resetForm }: PropsType) => {
         updated_at_to: formData.updated_at_to ? dayjs(formData.updated_at_to) : null,
       });
     }
-  }, [formData]);
+  }, [formData, form]);
 
   const formatDates = (values: any) => {
     ['created_at_from', 'created_at_to', 'updated_at_from', 'updated_at_to'].forEach((field) => {
