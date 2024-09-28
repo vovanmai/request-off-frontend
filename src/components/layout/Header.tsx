@@ -36,6 +36,10 @@ const LayoutHeader = ({collapsed, toggleSider}: {collapsed: boolean, toggleSider
 
 
   useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      return
+    }
     const getProfile = async () => {
       try {
         const response = await requestProfile()

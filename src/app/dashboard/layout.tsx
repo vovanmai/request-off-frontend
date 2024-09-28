@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, ReactNode } from 'react';
+import React, {useState, ReactNode, Suspense } from 'react';
 import withAuth from "@/hooks/withAuth";
 import type { MenuProps } from 'antd';
 import { Layout, theme } from 'antd';
@@ -7,11 +7,13 @@ import LayoutHeader from '@/components/layout/Header'
 import LayoutSider from '@/components/layout/Sider'
 import LayoutFooter from '@/components/layout/Footer'
 type MenuItem = Required<MenuProps>['items'][number];
-
+interface DashboardLayoutUserProps {
+  children: ReactNode;
+}
 
 const { Content } = Layout;
 
-const DashboardLayoutUser: React.FC = ({ children }: { children?: ReactNode }) => {
+const DashboardLayoutUser = ({ children }: DashboardLayoutUserProps) => {
   const {
       token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -53,4 +55,14 @@ const DashboardLayoutUser: React.FC = ({ children }: { children?: ReactNode }) =
   );
 };
 
-export default withAuth(DashboardLayoutUser);
+
+const AuthenticatedDashboardLayout = ({ children }: DashboardLayoutUserProps) => {
+  const AuthComponent = withAuth(DashboardLayoutUser);
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AuthComponent>{children}</AuthComponent>
+    </Suspense>
+  );
+}
+
+export default AuthenticatedDashboardLayout;

@@ -197,10 +197,4 @@ const ListRoles = () => {
   );
 }
 
-export default function Page() {
-  return (
-    <Suspense fallback={<div>Loading roles...</div>}>
-      <ListRoles />
-    </Suspense>
-  );
-}
+export default ListRoles
