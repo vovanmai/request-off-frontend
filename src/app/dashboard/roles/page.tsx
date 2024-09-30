@@ -2,14 +2,16 @@
 import {Card, Button, Table, Breadcrumb } from "antd"
 import { PlusCircleOutlined, HomeOutlined } from "@ant-design/icons"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState, Suspense, useCallback } from "react"
+import React, { useEffect, useState, Suspense, useCallback } from "react"
 import { getRoles } from '@/api/user/role'
 import dayjs from 'dayjs'
 import Search from "./Search"
 import { removeEmptyFields } from "@/helper/common"
 import qs from 'qs'
+import withAuth from "@/hooks/withAuth";
 
 import type { GetProp, TableProps } from 'antd';
+import DashboardLayoutUser from "../layout";
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 
@@ -197,4 +199,4 @@ const ListRoles = () => {
   );
 }
 
-export default ListRoles
+export default withAuth(ListRoles)

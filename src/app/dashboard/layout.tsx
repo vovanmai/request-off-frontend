@@ -1,6 +1,5 @@
 'use client'
 import React, {useState, ReactNode, Suspense } from 'react';
-import withAuth from "@/hooks/withAuth";
 import type { MenuProps } from 'antd';
 import { Layout, theme } from 'antd';
 import LayoutHeader from '@/components/layout/Header'
@@ -36,33 +35,25 @@ const DashboardLayoutUser = ({ children }: DashboardLayoutUserProps) => {
   ];
 
   return (
-    <Layout hasSider>
-      <LayoutSider
-        collapsed={collapsed}
-        menus={menuItems}
-      />
-      <Layout style={{ marginInlineStart: marginInlineStart }}>
-        <LayoutHeader
+    <Suspense fallback={<div>Loading...</div>}>
+      <Layout hasSider>
+        <LayoutSider
           collapsed={collapsed}
-          toggleSider={toggleSider}
+          menus={menuItems}
         />
-        <Content style={{ margin: '10px 12px 0px 12px' }}>
-          {children}
-        </Content>
-        <LayoutFooter/>
+        <Layout style={{ marginInlineStart: marginInlineStart }}>
+          <LayoutHeader
+            collapsed={collapsed}
+            toggleSider={toggleSider}
+          />
+          <Content style={{ margin: '10px 12px 0px 12px' }}>
+            {children}
+          </Content>
+          <LayoutFooter/>
+        </Layout>
       </Layout>
-    </Layout>
+    </Suspense>
   );
 };
 
-
-const AuthenticatedDashboardLayout = ({ children }: DashboardLayoutUserProps) => {
-  const AuthComponent = withAuth(DashboardLayoutUser);
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <AuthComponent>{children}</AuthComponent>
-    </Suspense>
-  );
-}
-
-export default AuthenticatedDashboardLayout;
+export default DashboardLayoutUser;
