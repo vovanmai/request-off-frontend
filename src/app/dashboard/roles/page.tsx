@@ -11,7 +11,6 @@ import qs from 'qs'
 import withAuth from "@/hooks/withAuth";
 
 import type { GetProp, TableProps } from 'antd';
-import DashboardLayoutUser from "../layout";
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
 type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
 
@@ -138,26 +137,22 @@ const ListRoles = () => {
     {
       title: 'ID',
       dataIndex: 'id',
-      width: '10%',
     },
     {
       title: 'Tên',
       dataIndex: 'name',
       sorter: true,
-      width: '30%',
     },
     {
       title: 'Ngày tạo',
       dataIndex: 'created_at',
       sorter: true,
-      width: '30%',
       render: (text: string) => dayjs(text).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: 'Ngày cập nhật',
       dataIndex: 'updated_at',
       sorter: true,
-      width: '30%',
       render: (text: string) => dayjs(text).format('YYYY-MM-DD HH:mm:ss'),
     },
   ];
@@ -186,14 +181,13 @@ const ListRoles = () => {
         />
         <div className="table-container">
           <Table
-            bordered
             columns={columns}
             rowKey={(record) => record.id}
             dataSource={data}
             pagination={pagination}
             loading={loading}
             onChange={handleTableChange}
-            scroll={{ x: 'max-content', y: 400 }}
+            scroll={{ x: 'max-content', y: 1000 }}
           />
         </div>
       </Card>

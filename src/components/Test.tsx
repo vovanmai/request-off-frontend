@@ -55,17 +55,41 @@ const columns: TableColumnsType<DataType> = [
 const dataSource: DataType[] = [
   { key: '1', name: 'Olivia', age: 32, address: 'New York Park' },
   { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
+  { key: '2', name: 'Ethan', age: 40, address: 'London Park' },
 ];
 
-const App = () => {
+const Test = () => {
   return (
     <Table<DataType>
-      pagination={{ pageSize: 5 }}
+      pagination={{ pageSize: 100 }}
       columns={columns}
       dataSource={dataSource}
-      scroll={{ x: 'max-content' }}
+      scroll={{ x: 'scroll', y: 400 }}
     />
   );
 };
 
-export default App;
+export default Test;
