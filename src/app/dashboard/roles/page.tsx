@@ -184,16 +184,18 @@ const ListRoles = () => {
           resetForm={() => { setQueryParams({}) }}
           formData={searchData}
         />
-        <Table
-          bordered
-          columns={columns}
-          rowKey={(record) => record.id}
-          dataSource={data}
-          pagination={pagination}
-          loading={loading}
-          onChange={handleTableChange}
-          scroll={{ x: 'max-content', y: 400 }}
-        />
+        <div className="table-container">
+          <Table
+            bordered
+            columns={columns}
+            rowKey={(record) => record.id}
+            dataSource={data}
+            pagination={pagination}
+            loading={loading}
+            onChange={handleTableChange}
+            scroll={{ x: 'max-content', y: 400 }}
+          />
+        </div>
       </Card>
     </div>
   );

@@ -128,3 +128,13 @@ a {
     max-width: 450px !important;
   }
 }
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Tăng tính tương tác trên thiết bị iOS */
+}
+
+.ant-table {
+  min-width: 100% !important; /* Đảm bảo bảng chiếm toàn bộ chiều rộng */
+}
