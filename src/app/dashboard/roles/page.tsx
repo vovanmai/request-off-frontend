@@ -9,6 +9,8 @@ import Search from "./Search"
 import { removeEmptyFields } from "@/helper/common"
 import qs from 'qs'
 import withAuth from "@/hooks/withAuth";
+import Link from 'next/link'
+import { ROUTES } from "@/constants/routes"
 
 import type { GetProp, TableProps } from 'antd';
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
@@ -25,13 +27,15 @@ const ListRoles = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const actions = (
-    <Button
-      size="large"
-      onClick={() => { router.push('/dashboard') }}
-      type="primary"
-    >
-      <PlusCircleOutlined />Tạo mới
-    </Button>
+    <Link href={ROUTES.DASHBOARD_ROLE_CREATE}>
+      <Button
+        size="large"
+        onClick={() => { router.push('/dashboard/roles/create') }}
+        type="primary"
+      >
+        <PlusCircleOutlined />Tạo mới
+      </Button>
+    </Link>
   );
 
   type SearchDataType = {
@@ -173,7 +177,7 @@ const ListRoles = () => {
         items={breadcrumbItems}
         style={{ marginBottom: 10 }}
       />
-      <Card title="Quyền" bordered={false} extra={actions}>
+      <Card title="Danh sách quyền" bordered={false} extra={actions}>
         <Search
           onSearch={onSearch}
           resetForm={() => { setQueryParams({}) }}
@@ -187,7 +191,7 @@ const ListRoles = () => {
             pagination={pagination}
             loading={loading}
             onChange={handleTableChange}
-            scroll={{ x: 'max-content', y: 1000 }}
+            scroll={{ x: 'max-content' }}
           />
         </div>
       </Card>

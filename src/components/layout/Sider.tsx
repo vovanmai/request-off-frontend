@@ -4,6 +4,7 @@ const { Sider } = Layout
 import React, {CSSProperties, useEffect, useState} from "react"
 import { useRouter, usePathname } from "next/navigation"
 type MenuItem = Required<MenuProps>['items'][number]
+import { getActiveMenuByRoute } from "../../helper/common"
 
 const LayoutSider = ({collapsed, menus}: {collapsed: boolean, menus: MenuItem[]}) => {
   const router = useRouter()
@@ -11,9 +12,10 @@ const LayoutSider = ({collapsed, menus}: {collapsed: boolean, menus: MenuItem[]}
   const [selectedMenu, setSelectedMenu] = useState<string[]>([])
 
   useEffect(() => {
-    let currentRoute = pathname.replace('/dashboard/', '');
-    currentRoute = currentRoute.replace(/^\/|\/$/g, '');
-    setSelectedMenu([currentRoute])
+    const menu = getActiveMenuByRoute(pathname)
+    if (menu) {
+      setSelectedMenu([menu])
+    }
   }, [pathname])
 
 
@@ -33,17 +35,8 @@ const LayoutSider = ({collapsed, menus}: {collapsed: boolean, menus: MenuItem[]}
     scrollbarColor: 'unset',
   };
 
-  const selectMenu: MenuProps['onSelect'] = (menuInfo) => {
-    const routes: { [key: string]: string } = {
-      'users': '/dashboard/users',
-      'roles': '/dashboard/roles',
-    }
-
-    const route = menuInfo?.key && routes[menuInfo.key] ? routes[menuInfo.key] : null;
-
-    if (route) {
-      router.push(route)
-    }
+  const selectMenu: MenuProps['onClick'] = (menuInfo) => {
+    router.push(menuInfo.key)
   }
 
   return (
@@ -57,7 +50,7 @@ const LayoutSider = ({collapsed, menus}: {collapsed: boolean, menus: MenuItem[]}
           theme="light"
           selectedKeys={selectedMenu}
           items={menus}
-          onSelect={selectMenu}
+          onClick={selectMenu}
         />
       </div>
     </Sider>

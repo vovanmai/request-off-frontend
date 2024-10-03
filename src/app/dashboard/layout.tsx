@@ -10,6 +10,8 @@ interface DashboardLayoutUserProps {
   children: ReactNode;
 }
 
+import menu from "./menus";
+
 const { Content } = Layout;
 
 const DashboardLayoutUser = ({ children }: DashboardLayoutUserProps) => {
@@ -23,16 +25,7 @@ const DashboardLayoutUser = ({ children }: DashboardLayoutUserProps) => {
     SetMarginInlineStart(!collapsed ? 80 : 200)
   }
 
-  const menuItems: MenuItem[] = [
-    {
-      key: 'roles',
-      label: 'Quyền',
-    },
-    {
-      key: 'users',
-      label: 'Người dùng',
-    },
-  ];
+  const menuItems: MenuItem[] = menu
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
