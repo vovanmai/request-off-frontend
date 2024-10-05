@@ -183,7 +183,7 @@ const ListRoles = () => {
           resetForm={() => { setQueryParams({}) }}
           formData={searchData}
         />
-        <div className="table-container">
+        <div>
           <Table
             columns={columns}
             rowKey={(record) => record.id}
