@@ -27,6 +27,7 @@ const ListRoles = () => {
   const router = useRouter()
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState<boolean>(false)
   const [permissionGroups, setPermissionGroups] = useState<PermissionGroupInterface[]>([]);
 
   const onFinish = async (values: any) => {
@@ -42,6 +43,7 @@ const ListRoles = () => {
 
   const onReset = () => {
     form.resetFields();
+    setErrors({})
     setPermissionGroups(permissionGroups.map(item => ({...item, checkedValues: []})))
   };
   const actions = (
@@ -77,11 +79,13 @@ const ListRoles = () => {
   useEffect(() => {
     const getPermissions = async () => {
       try {
+        setLoading(true)
         const response = await getAll();
         setPermissionGroups(response.data.map((item: any) => ({...item, checkedValues: [], checkedAll: false})));
       } catch (error) {
         console.error("Error fetching permissions", error);
       } finally {
+        setLoading(false)
       }
     };
     getPermissions();
@@ -117,15 +121,18 @@ const ListRoles = () => {
             name="name"
             label="Tên"
             rules={[{ required: true, message: 'Vui lòng nhập.' }]}
-            validateStatus={ errors.name ? 'error' : ''}
-            help={errors.name ? errors.name : ''}
+            validateStatus={ errors.name ? 'error' : undefined}
+            help={errors.name ? errors.name : undefined}
           >
             <Input size="large" />
           </Form.Item>
 
           <Form.Item label="Quyền">
             <div style={{ border: "1px solid #d9d9d9", padding: 15, borderRadius: 8}}>
-              {permissionGroups.map((item, index) => {
+              { loading && (
+                <div>Đang tải...</div>
+              )}
+              {!loading && permissionGroups.map((item, index) => {
                 return <PermissionGroup
                   key={index}
                   permissionGroup={item}
