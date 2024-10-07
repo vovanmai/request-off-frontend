@@ -40,6 +40,9 @@ export default function Login() {
   const onFinish = async (values: any) => {
     try {
       setIsLoading(true)
+      if (companies.length === 1) {
+        values.company_id = companies[0].value
+      }
       const response = await requestLogin(values)
       localStorage.setItem('access_token', response.data.access_token)
       toast.success('Đăng nhập thành công!')
@@ -95,7 +98,7 @@ export default function Login() {
       />
     </Form.Item>
 
-    <Form.Item
+    {companies.length > 1 && <Form.Item
       name="company_id"
       label="Doanh nghiệp"
       rules={[{ required: true }]
@@ -106,7 +109,7 @@ export default function Login() {
         options={companies}
       >
       </Select>
-    </Form.Item>
+    </Form.Item>}
 
     <Form.Item
       label="Mật khẩu"

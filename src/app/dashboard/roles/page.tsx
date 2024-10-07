@@ -1,9 +1,9 @@
 'use client'
-import {Card, Button, Table, Breadcrumb } from "antd"
-import { PlusCircleOutlined, HomeOutlined } from "@ant-design/icons"
+import {Card, Button, Table, Tooltip, Space, theme, Tag } from "antd"
+import { PlusCircleOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons"
 import { useRouter, useSearchParams } from "next/navigation"
-import React, { useEffect, useState, Suspense, useCallback } from "react"
-import { getRoles } from '@/api/user/role'
+import React, { useEffect, useState } from "react"
+import { getRoles, deleteRole } from '@/api/user/role'
 import dayjs from 'dayjs'
 import Search from "./Search"
 import { removeEmptyFields } from "@/helper/common"
@@ -11,6 +11,10 @@ import qs from 'qs'
 import withAuth from "@/hooks/withAuth";
 import Link from 'next/link'
 import { ROUTES } from "@/constants/routes"
+import { toast } from 'react-toastify'
+import ConfirmModal from "@/components/ConfirmModal"
+import { ROLE } from "@/constants/common"
+import Breadcrumb from "@/components/Breadcrumb"
 
 import type { GetProp, TableProps } from 'antd';
 type ColumnsType<T extends object = object> = TableProps<T>['columns'];
@@ -24,8 +28,14 @@ interface DataType {
 }
 
 const ListRoles = () => {
+  const {
+    token: { colorPrimary },
+  } = theme.useToken();
   const router = useRouter()
   const searchParams = useSearchParams()
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false)
+  const [deletedId, setDeletedId] = useState<any>(null)
+  const [loadingDelete, setLoadingDelete] = useState<boolean>(false)
   const actions = (
     <Link href={ROUTES.DASHBOARD_ROLE_CREATE}>
       <Button
@@ -146,6 +156,21 @@ const ListRoles = () => {
       title: 'Tên',
       dataIndex: 'name',
       sorter: true,
+      render: (text, record) => {
+        return (
+          <Link style={{ color: colorPrimary }} href={`/dashboard/roles/${record.id}/edit`}>{text}</Link>
+        )
+      }
+    },
+    {
+      title: 'Loại',
+      dataIndex: 'type',
+      sorter: true,
+      render: (text, record) => {
+        return (
+          <Tag color={text === ROLE.TYPE_DEFAULT ? 'magenta' : 'green'}>{ text === ROLE.TYPE_DEFAULT ? 'Mặc định' : 'Tuỳ chỉnh' }</Tag>
+        )
+      }
     },
     {
       title: 'Ngày tạo',
@@ -159,23 +184,51 @@ const ListRoles = () => {
       sorter: true,
       render: (text: string) => dayjs(text).format('YYYY-MM-DD HH:mm:ss'),
     },
+    {
+      title: 'Hành động',
+      render: (record) => {
+        return (
+          <Space>
+            <Tooltip title="Chỉnh sửa">
+              <Link href={`/dashboard/roles/${record.id}/edit`}>
+                <Button shape="circle" icon={<EditOutlined />} />
+              </Link>
+            </Tooltip><Tooltip title="">
+              <Button onClick={() => {showDeleteConfirm(record.id)}} danger shape="circle" icon={<DeleteOutlined />} />
+            </Tooltip>
+          </Space>
+        )
+      },
+    },
   ];
 
-  const breadcrumbItems = [
-    {
-      href: '/dashboard',
-      title: <HomeOutlined />,
-    },
-    {
-      title: 'Quyền',
-    },
-  ]
+  const deleteRecord = async () => {
+    try {
+      setLoadingDelete(true)
+      await deleteRole(deletedId)
+      setData(data.filter((item) => item.id !== deletedId))
+      setShowConfirmDelete(false)
+      toast.success('Xoá thành công!')
+    } catch (error: any) {
+      toast.error(error.data.message)
+    } finally {
+      setLoadingDelete(false)
+    }
+  }
+
+  const showDeleteConfirm = (id: number) => {
+    setShowConfirmDelete(true)
+    setDeletedId(id)
+  };
 
   return (
     <div>
-      <Breadcrumb
-        items={breadcrumbItems}
-        style={{ marginBottom: 10 }}
+      <Breadcrumb items={[{title: 'Quyền'}]} />
+      <ConfirmModal
+        visible={showConfirmDelete}
+        onOk={deleteRecord}
+        onCancel={() => setShowConfirmDelete(false)}
+        confirmLoading={loadingDelete}
       />
       <Card title="Danh sách quyền" bordered={false} extra={actions}>
         <Search
