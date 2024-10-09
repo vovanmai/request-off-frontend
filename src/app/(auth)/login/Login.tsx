@@ -15,6 +15,7 @@ import { login as requestLogin } from "@/api/user/auth/index"
 
 import { useAppSelector } from '@/store/hooks'
 import { selectCompanies, selectEmail } from "@/store/user/auth/authSlice"
+import {ROUTES} from "@/constants/routes";
 
 export default function Login() {
   const [form] = Form.useForm();
@@ -52,7 +53,7 @@ export default function Login() {
         sessionStorage.removeItem('redirect')
         router.push(redirect)
       } else {
-        router.push('/dashboard/roles');
+        router.push(ROUTES.DASHBOARD_USER_LIST);
       }
     } catch (error) {
       toast.error('Thông tin đăng nhập không đúng.');

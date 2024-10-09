@@ -20,6 +20,7 @@ const customTheme = {
     // Seed Token
     // colorPrimary: '#00b96b',
     colorPrimary: 'rgb(20 184 166)',
+    // colorPrimary: "red",
     // borderRadius: 2,
 
     // Alias Token
