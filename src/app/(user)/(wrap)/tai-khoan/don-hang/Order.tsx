@@ -7,6 +7,7 @@ import { list as listOrders } from '@/api/user/order';
 import numeral from 'numeral';
 import Link from 'next/link';
 import { ORDER_STATUS } from '@/constants/common';
+import dayjs from 'dayjs';
 
 const Order = () => {
   const [orders, setOrders] = React.useState<any[]>([]);
@@ -28,15 +29,16 @@ const Order = () => {
     {
       title: 'Mã đơn hàng',
       dataIndex: 'id',
+      render: (text: string) => {
+        return `#dh${text}`;
+      },
     },
     {
       title: 'Ngày đặt hàng',
       dataIndex: 'created_at',
-      render: (text: string) => new Date(text).toLocaleDateString('vi-VN', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-      }),
+      render: (text: string) => {
+        return dayjs(text).format('DD/MM/YYYY HH:mm');
+      },
     },
     {
       title: 'Trạng thái',
@@ -53,7 +55,7 @@ const Order = () => {
     {
       title: 'Tổng tiền',
       dataIndex: 'total',
-      render: (text: number) => numeral(text).format('0,0₫'),
+      render: (text: number) => numeral(text).format('0,0') + ' đ',
     },
     {
       title: 'Chi tiết',
@@ -73,8 +75,9 @@ const Order = () => {
           style={{ marginBottom: 12 }}
           items={[
             { title: <Link href="/"> <HomeOutlined /> Trang chủ</Link> },
+            { title: <Link href="/tai-khoan">Tài khoản</Link> },
             {
-              title: 'Danh sách giỏ hàng',
+              title: 'Danh sách đơn hàng',
             },
           ]}
         />
