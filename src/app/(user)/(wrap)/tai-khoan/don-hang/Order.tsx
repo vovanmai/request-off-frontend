@@ -85,6 +85,7 @@ const Order = () => {
             },
           ]}
         />
+        <h3 style={{ marginBottom: 12 }}>Danh sách đơn hàng</h3>
         <Col lg={24} xs={24}>
             <Table
               loading={loading}
