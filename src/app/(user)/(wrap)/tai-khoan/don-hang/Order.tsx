@@ -11,14 +11,18 @@ import dayjs from 'dayjs';
 
 const Order = () => {
   const [orders, setOrders] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        setLoading(true);
         const response = await listOrders();
         setOrders(response.data);
       } catch (error) {
         console.error('Error fetching orders:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -83,6 +87,7 @@ const Order = () => {
         />
         <Col lg={24} xs={24}>
             <Table
+              loading={loading}
               dataSource={orders}
               columns={columns}
               rowKey="id"
