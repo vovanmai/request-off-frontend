@@ -5,7 +5,7 @@ import type { CSSProperties } from 'react';
 import { Row, Col } from 'antd';
 
 export default function Post(props: any) {
-  const { post } = props;
+  const { post, isShowCategory = false } = props;
 
   const styleName: CSSProperties = {
     marginBottom: '8px',
@@ -69,6 +69,20 @@ export default function Post(props: any) {
         </Col>
         <Col span="18" style={{ paddingLeft: '16px' }}>
           <div style={styleName}>{post.name}</div>
+          {isShowCategory && (
+            <div style={{ 
+              marginBottom: '8px',
+              background: 'hsl(142deg 70% 34% / 10%)',
+              display: 'inline-block',
+              padding: '6px 14px',
+              borderRadius: '15px',
+              fontWeight: 500,
+              color: '#015C3F',
+              borderColor: 'gray',
+              fontSize: '13px' }}>
+              {post.category?.name}
+            </div>
+          )}
           <div style={styleDescription}>{post.short_description}</div>
         </Col>
       </Row>
