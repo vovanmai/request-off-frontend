@@ -8,7 +8,7 @@ export default function PostByCategory(props: any) {
   const { post } = props;
 
   const styleName: CSSProperties = {
-    marginBottom: '8px',
+    marginBottom: '5px',
     lineHeight: '1.5', // Quan trọng để đúng 2 dòng
     maxHeight: '3em',
     minHeight: '3em',  // 2 dòng x 1.5em = 3em
@@ -22,7 +22,6 @@ export default function PostByCategory(props: any) {
   };
 
   const styleDescription: CSSProperties = {
-    marginTop: '3px',
     fontSize: '14px',
     lineHeight: '1.5', // 3 dòng x 1.5 = 4.5em
     maxHeight: '4.5em',

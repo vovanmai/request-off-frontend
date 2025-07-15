@@ -9,7 +9,7 @@ export default function HighlightPost(props: any) {
   const { post } = props;
 
   const styleName: CSSProperties = {
-    marginBottom: '8px',
+    marginBottom: '5px',
     marginTop: '8px',
     lineHeight: '1.5', // Quan trọng để đúng 2 dòng
     maxHeight: '3em',  // 2 dòng x 1.5em = 3em
@@ -23,7 +23,6 @@ export default function HighlightPost(props: any) {
   };
 
   const styleDescription: CSSProperties = {
-    marginTop: '4px',
     fontSize: '14px',
     lineHeight: '1.5', // 3 dòng x 1.5 = 4.5em
     maxHeight: '4.5em',
@@ -70,7 +69,7 @@ export default function HighlightPost(props: any) {
         </div>
         <div style={styleName}>{post.name}</div>
         <div style={{ 
-            marginBottom: '8px',
+            marginBottom: '5px',
             background: 'hsl(142deg 70% 34% / 10%)',
             display: 'inline-block',
             padding: '6px 14px',

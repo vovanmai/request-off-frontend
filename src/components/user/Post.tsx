@@ -8,7 +8,7 @@ export default function Post(props: any) {
   const { post, isShowCategory = false } = props;
 
   const styleName: CSSProperties = {
-    marginBottom: '8px',
+    marginBottom: '5px',
     lineHeight: '1.5', // Quan trọng để đúng 2 dòng
     maxHeight: '3em',  // 2 dòng x 1.5em = 3em
     overflow: 'hidden',
@@ -21,7 +21,6 @@ export default function Post(props: any) {
   };
 
   const styleDescription: CSSProperties = {
-    marginTop: '3px',
     fontSize: '14px',
     lineHeight: '1.5', // 3 dòng x 1.5 = 4.5em
     maxHeight: '4.5em',
@@ -71,7 +70,7 @@ export default function Post(props: any) {
           <div style={styleName}>{post.name}</div>
           {isShowCategory && (
             <div style={{ 
-              marginBottom: '8px',
+              marginBottom: '5px',
               background: 'hsl(142deg 70% 34% / 10%)',
               display: 'inline-block',
               padding: '6px 14px',
