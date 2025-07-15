@@ -16,7 +16,7 @@ export default function Post(props: any) {
     display: '-webkit-box',
     WebkitBoxOrient: 'vertical',
     WebkitLineClamp: 2,
-    fontSize: '14px',
+    fontSize: '16px',
     fontWeight: 600,
   };
 

@@ -69,6 +69,18 @@ export default function HighlightPost(props: any) {
           />
         </div>
         <div style={styleName}>{post.name}</div>
+        <div style={{ 
+            marginBottom: '8px',
+            background: 'hsl(142deg 70% 34% / 10%)',
+            display: 'inline-block',
+            padding: '6px 14px',
+            borderRadius: '15px',
+            fontWeight: 500,
+            color: '#015C3F',
+            borderColor: 'gray',
+            fontSize: '13px' }}>
+            {post.category?.name}
+          </div>
         <div style={styleDescription}>{post.short_description}</div>
       </div>
     </Link>
