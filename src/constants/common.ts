@@ -20,11 +20,26 @@ const ORDER_STATUS_DELIVERED = 4
 const ORDER_STATUS_CANCELLED = 5
 
 const ORDER_STATUS = {
-  [ORDER_STATUS_PENDING]: "Chờ xử lý",
-  [ORDER_STATUS_PROCESSING]: "Đang xử lý",
-  [ORDER_STATUS_SHIPPING]: "Đang giao hàng",
-  [ORDER_STATUS_DELIVERED]: "Đã giao hàng",
-  [ORDER_STATUS_CANCELLED]: "Đã hủy",
+  [ORDER_STATUS_PENDING]: {
+    name: "Đang chờ xử lý",
+    color: "#f0ad4e",
+  },
+  [ORDER_STATUS_PROCESSING]: {
+    name: "Đang xử lý",
+    color: "#5bc0de",
+  },
+  [ORDER_STATUS_SHIPPING]: {
+    name: "Đang giao hàng",
+    color: "#3a62c9ff",
+  },
+  [ORDER_STATUS_DELIVERED]: {
+    name: "Đã giao hàng",
+    color: "#5cb85c",
+  },
+  [ORDER_STATUS_CANCELLED]: {
+    name: "Đã hủy",
+    color: "#d9534f",
+  },
 }
 
 const USER_PRIMARY_COLOR = '#27964f'

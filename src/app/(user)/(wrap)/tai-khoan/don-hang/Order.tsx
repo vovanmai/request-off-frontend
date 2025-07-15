@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useEffect } from 'react';
-import { Table, Col, Breadcrumb } from 'antd';
-import { HomeOutlined } from '@ant-design/icons';
+import { Table, Col, Breadcrumb, Tag, Tooltip, Button } from 'antd';
+import { HomeOutlined, InfoOutlined } from '@ant-design/icons';
 import { list as listOrders } from '@/api/user/order';
 import numeral from 'numeral';
 import Link from 'next/link';
@@ -34,7 +34,7 @@ const Order = () => {
       title: 'Mã đơn hàng',
       dataIndex: 'id',
       render: (text: string) => {
-        return `#dh${text}`;
+        return `dh${text}`;
       },
     },
     {
@@ -48,7 +48,8 @@ const Order = () => {
       title: 'Trạng thái',
       dataIndex: 'status',
       render: (text: keyof typeof ORDER_STATUS | string | number) => {
-        return ORDER_STATUS[text as keyof typeof ORDER_STATUS] || text;
+        const status = ORDER_STATUS[text as keyof typeof ORDER_STATUS];
+        return <Tag color={status?.color}>{status?.name || text}</Tag>;
       },
     },
     {
@@ -65,9 +66,11 @@ const Order = () => {
       title: 'Chi tiết',
       dataIndex: 'id',
       render: (id: number) => (
-        <Link href={`/user/order/${id}`} style={{ color: '#1677ff' }}>
-          Xem chi tiết
-        </Link>
+        <Tooltip title="Chi tiết">
+          <Link href={`tai-khoan/don-hang/${id}`}>
+            <Button shape="circle" icon={<InfoOutlined />} />
+          </Link>
+        </Tooltip>
       ),
     },
   ];
