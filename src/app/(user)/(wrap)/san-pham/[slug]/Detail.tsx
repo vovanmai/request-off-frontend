@@ -9,8 +9,7 @@ import Image from 'next/image';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, FreeMode, Navigation, Thumbs } from 'swiper/modules';
-const { Text } = Typography;
-import type { FormProps } from 'antd';
+const { Text, Paragraph } = Typography;
 import { create as createCart } from '@/api/user/cart';
 import { useRouter } from 'next/navigation';
 
@@ -211,6 +210,9 @@ const Detail = ({ product }: Props) => {
                     {product.price.toLocaleString('vi-VN')} đ
                   </span>
                 )}
+              </div>
+              <div style={{ marginBottom: 15 }}>
+                Sku: <strong><Paragraph style={{ display: 'inline' }} copyable>{product.sku}</Paragraph></strong>
               </div>
               <div style={{ marginBottom: 15 }}>
                 Đơn vị: <strong>{product.unit}</strong>
