@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useEffect } from 'react';
-import { Table, Col, Breadcrumb, Tag, Tooltip, Button } from 'antd';
+import { Table, Col, Breadcrumb, Tag, Tooltip, Button, Typography } from 'antd';
+const { Paragraph } = Typography;
 import { HomeOutlined, InfoOutlined } from '@ant-design/icons';
 import { list as listOrders } from '@/api/user/order';
 import numeral from 'numeral';
@@ -32,9 +33,9 @@ const Order = () => {
   const columns = [
     {
       title: 'Mã đơn hàng',
-      dataIndex: 'id',
+      dataIndex: 'code',
       render: (text: string) => {
-        return `dh${text}`;
+        return <Paragraph copyable>{text}</Paragraph>
       },
     },
     {

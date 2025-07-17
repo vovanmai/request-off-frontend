@@ -1,5 +1,6 @@
 'use client'
-import { Card, Button, Table, Tooltip, Space, theme, Image, Badge } from "antd"
+import { Card, Button, Table, Tooltip, Space, theme, Image, Badge, Typography } from "antd"
+const { Paragraph } = Typography;
 import { PlusCircleOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons"
 import { useRouter, useSearchParams } from "next/navigation"
 import React, { useEffect, useState } from "react"
@@ -144,6 +145,16 @@ const ProductList = () => {
     {
       title: 'ID',
       dataIndex: 'id',
+    },
+    {
+      title: 'Sku',
+      dataIndex: 'sku',
+      sorter: true,
+      render: (text) => {
+        return (
+          <Paragraph copyable>{text}</Paragraph>
+        )
+      }
     },
     {
       title: 'Tên',
