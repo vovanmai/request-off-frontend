@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Row, Col, Card, Form, Button, Input, Radio, Divider } from 'antd';
 import numeral from 'numeral';
 import { useRouter } from 'next/navigation';
@@ -13,6 +13,8 @@ import { useAppDispatch, useAppSelector } from '@/store/user/hooks';
 import { setCarts } from "@/store/user/cartSlice"
 import { useMessageApi } from '@/components/user/MessageProvider';
 const { TextArea } = Input;
+import ConfirmModal from "@/components/ConfirmModal"
+import { set } from 'lodash';
 
 const style: React.CSSProperties = {
   display: 'flex',
@@ -28,6 +30,8 @@ const Checkout = () => {
   const carts = useAppSelector((state) => state.cart.carts)
   const totalPrice = carts.reduce((acc: number, item: any) => acc + (item.product.sale_price ?? item.product.price) * item.quantity, 0);
   const currentUser: any = useAppSelector((state) => state.auth.currentUser)
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [orderLoading, setOrderLoading] = useState<boolean>(false)
 
   useEffect(() => {
     if(carts.length === 0) {
@@ -83,30 +87,44 @@ const Checkout = () => {
   const onSubmit = async () => {
     form.validateFields()
       .then(async (values) => {
-        console.log(values)
-        try {
-          await createOrder(values)
-          dispatch(setCarts([]))
-          messageApi.open({
-            type: 'success',
-            content: 'Đặt hàng thành công !. Cảm ơn bạn đã mua hàng của chúng tôi..',
-          })
-          router.push('/')
-        }
-        catch (error) {
-          messageApi.open({
-            type: 'error',
-            content: 'Có lỗi xảy ra !',
-          })
-        }
+        setShowConfirm(true)
       }).catch((error: any) => {
         
       })
   };
 
+  const order = async () => {
+    try {
+      setOrderLoading(true)
+      await createOrder(form.getFieldsValue())
+      dispatch(setCarts([]))
+      messageApi.open({
+        type: 'success',
+        content: 'Đặt hàng thành công !. Cảm ơn bạn đã mua hàng của chúng tôi..',
+      })
+      router.push('/')
+    }
+    catch (error) {
+      messageApi.open({
+        type: 'error',
+        content: 'Có lỗi xảy ra !',
+      })
+    } finally {
+      setOrderLoading(false)
+      setShowConfirm(false)
+    }
+  }
+
   return (
     <div className="container" style={{ marginTop: 24 }}>
       <div className="container__inner">
+        <ConfirmModal
+        visible={showConfirm}
+        onOk={order}
+        onCancel={() => setShowConfirm(false)}
+        confirmLoading={orderLoading}
+        content={'Hãy đảm bảo rằng bạn đã kiểm tra kỹ thông tin trước khi hoàn tất đơn hàng.'}
+      />
         <Row gutter={[20, 20]}>
           <Col lg={16} xs={24}>
             <Table
