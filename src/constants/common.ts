@@ -21,7 +21,7 @@ const ORDER_STATUS_CANCELLED = 5
 
 const ORDER_STATUS = {
   [ORDER_STATUS_PENDING]: {
-    name: "Đang chờ xử lý",
+    name: "Chờ xác nhận",
     color: "#f0ad4e",
   },
   [ORDER_STATUS_PROCESSING]: {

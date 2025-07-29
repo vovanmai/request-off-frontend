@@ -68,7 +68,7 @@ const Order = () => {
       dataIndex: 'id',
       render: (id: number) => (
         <Tooltip title="Chi tiết">
-          <Link href={`tai-khoan/don-hang/${id}`}>
+          <Link href={`/tai-khoan/don-hang/${id}`}>
             <Button shape="circle" icon={<InfoOutlined />} />
           </Link>
         </Tooltip>

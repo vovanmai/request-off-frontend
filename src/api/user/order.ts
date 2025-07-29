@@ -4,6 +4,10 @@ export function list(params: object = {}) {
   return api.get('api/orders', {params});
 }
 
+export function getDetail(id: number) {
+  return api.get(`api/orders/${id}`);
+}
+
 export function create(data: object) {
   return api.post('api/orders', data);
 }

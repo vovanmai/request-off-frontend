@@ -244,7 +244,7 @@ const Checkout = () => {
                       <Radio.Group
                         style={style}
                         options={[
-                          { value: 1, label: 'Tiền mặt' },
+                          { value: 1, label: 'Thanh toán khi nhận hàng' },
                         ]}
                       />
                     </Form.Item>
