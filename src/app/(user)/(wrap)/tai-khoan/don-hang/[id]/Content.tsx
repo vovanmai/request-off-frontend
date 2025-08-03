@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Breadcrumb, Tag, Steps, Card, Descriptions, Typography, Table } from 'antd';
-const { Paragraph } = Typography;
+const { Paragraph, Text } = Typography;
 import { HomeOutlined } from '@ant-design/icons';
 import { getDetail } from '@/api/user/order';
 import numeral from 'numeral';
@@ -145,23 +145,32 @@ const Content = () => {
       render: (record: any) => {
         const product = record.product;
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Image
-              src={`${product.preview_image.data.endpoint_url}/${product.preview_image.path}/${product.preview_image.filename}`}
-              alt={product.name}
-              width={179}
-              height={179}
-              style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 4, marginRight: 12 }}
-            />
-            <span>{product.name}</span>
-            <span>x {record.quantity}</span>
-          </div>
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} href={`/san-pham/${product.slug}`} className="d-flex align-items-center justify-content-between">
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Image
+                src={`${product.preview_image.data.endpoint_url}/${product.preview_image.path}/${product.preview_image.filename}`}
+                alt={product.name}
+                width={179}
+                height={179}
+                style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 4, marginRight: 12 }}
+              />
+              <div>
+                <div>{product.name}</div>
+                <div>x {record.quantity}</div>
+              </div>
+            </div>
+            <div>
+              {record.product.sale_price && (
+                <Text type="secondary" delete>
+                  {numeral(product.price).format('0,0')} đ
+                </Text>
+              )}
+              <span style={{ color: '#ee4d2d', fontWeight: 500 }}> {numeral(record.price).format('0,0')} đ </span>
+            </div>
+          </Link>
         )
       },
-    },
-    {
-      render: (record) => `${numeral(record.price * record.quantity).format('0,0')} đ`,
-    },
+    }
   ];
 
   return (
@@ -201,7 +210,7 @@ const Content = () => {
           <Table 
             dataSource={order?.order_details} 
             columns={columns}
-            showHeader={false} 
+            showHeader={false}
             bordered
             pagination={false}
             scroll={{ x: 'max-content' }}
