@@ -4,7 +4,7 @@ import ProductCard from './ProductCard';
 export const dynamic = 'force-dynamic';
 
 export default async function ProductList() {
-  const data = await fetch(`${process.env.API_BASE_URL}/api/products`, {
+  const data = await fetch(`${process.env.API_BASE_URL}/products`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',

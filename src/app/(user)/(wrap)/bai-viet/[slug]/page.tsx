@@ -9,7 +9,7 @@ type Props = {
 };
 
 const getDetailPost = async (slug: string) => {
-  const data = await fetch(`${process.env.API_BASE_URL}/api/posts/${slug}`, {
+  const data = await fetch(`${process.env.API_BASE_URL}/posts/${slug}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',

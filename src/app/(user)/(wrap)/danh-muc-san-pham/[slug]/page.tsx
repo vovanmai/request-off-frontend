@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 
 const getCategoryDetail = async (slug: string) => {
   const params = new URLSearchParams({ type: '1' });
-  const data = await fetch(`${process.env.API_BASE_URL}/api/categories/${slug}?${params.toString()}`, {
+  const data = await fetch(`${process.env.API_BASE_URL}/categories/${slug}?${params.toString()}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',

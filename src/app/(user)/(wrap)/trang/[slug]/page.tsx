@@ -8,7 +8,7 @@ type Props = {
 };
 
 const getDetailPage = async (slug: string) => {
-  const data = await fetch(`${process.env.API_BASE_URL}/api/pages/${slug}`, {
+  const data = await fetch(`${process.env.API_BASE_URL}/pages/${slug}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',

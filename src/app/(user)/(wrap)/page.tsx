@@ -33,7 +33,7 @@ export const metadata = {
 };
 
 const getBanners = async () => {
-  const data = await fetch(`${process.env.API_BASE_URL}/api/banners`, {
+  const data = await fetch(`${process.env.API_BASE_URL}/banners`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
