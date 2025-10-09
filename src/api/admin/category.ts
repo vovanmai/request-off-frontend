@@ -1,29 +1,29 @@
 import api from '@/api/admin/axiosClient';
 
 export function getRoles(params: object) {
-  return api.get('api/admin/categories', { params: params});
+  return api.get('admin/categories', { params: params});
 }
 
 export function getAll() {
-  return api.get('api/admin/categories');
+  return api.get('admin/categories');
 }
 
 export function getById(id: number) {
-  return api.get(`api/admin/categories/${id}`);
+  return api.get(`admin/categories/${id}`);
 }
 
 export function create(data: object) {
-  return api.post('api/admin/categories', data);
+  return api.post('admin/categories', data);
 }
 
 export function update(id: any, data: object) {
-  return api.put(`api/admin/categories/${id}`, data);
+  return api.put(`admin/categories/${id}`, data);
 }
 
 export function updateOrder(data: object) {
-  return api.post('api/admin/categories/update-order', data);
+  return api.post('admin/categories/update-order', data);
 }
 
 export function deleteCategory(id: number) {
-  return api.delete(`api/admin/categories/${id}`);
+  return api.delete(`admin/categories/${id}`);
 }

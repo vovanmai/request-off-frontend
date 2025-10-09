@@ -1,18 +1,18 @@
 import api from '@/api/user/axiosClient';
 
 export function list(params: object = {}) {
-  return api.get('api/orders', {params});
+  return api.get('orders', {params});
 }
 
 export function getDetail(id: number) {
-  return api.get(`api/orders/${id}`);
+  return api.get(`orders/${id}`);
 }
 
 export function create(data: object) {
-  return api.post('api/orders', data);
+  return api.post('orders', data);
 }
 
 export function update(id: any, data: object) {
-  return api.put('api/orders/' + id, data);
+  return api.put('orders/' + id, data);
 }
 

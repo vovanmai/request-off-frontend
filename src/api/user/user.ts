@@ -1,21 +1,21 @@
 import api from '@/api/admin/axiosClient';
 
 export function getUsers(params: object) {
-  return api.get('api/users', { params: params});
+  return api.get('users', { params: params});
 }
 
 export function getUser(id: number) {
-  return api.get(`api/users/${id}`);
+  return api.get(`users/${id}`);
 }
 
 export function createUser(data: object) {
-  return api.post('api/users', data);
+  return api.post('users', data);
 }
 
 export function updateUser(id: number, data: object) {
-  return api.put(`api/users/${id}`, data);
+  return api.put(`users/${id}`, data);
 }
 
 export function deleteUser(id: number) {
-  return api.delete(`api/users/${id}`);
+  return api.delete(`users/${id}`);
 }

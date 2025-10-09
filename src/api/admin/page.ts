@@ -2,21 +2,21 @@ import api from '@/api/admin/axiosClient';
 
 
 export function list(params: object) {
-  return api.get('api/admin/pages', {params});
+  return api.get('admin/pages', {params});
 }
 
 export function getById(id: number) {
-  return api.get(`api/admin/pages/${id}`);
+  return api.get(`admin/pages/${id}`);
 }
 
 export function create(data: object) {
-  return api.post('api/admin/pages', data);
+  return api.post('admin/pages', data);
 }
 
 export function update(id: any, data: object) {
-  return api.put(`api/admin/pages/${id}`, data);
+  return api.put(`admin/pages/${id}`, data);
 }
 
 export function deletePage(id: number) {
-  return api.delete(`api/admin/pages/${id}`);
+  return api.delete(`admin/pages/${id}`);
 }

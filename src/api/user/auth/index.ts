@@ -1,17 +1,17 @@
 import api from '@/api/user/axiosClient';
 
 export function login(data: object) {
-  return api.post('api/login', data);
+  return api.post('login', data);
 }
 
 export function register(data: object) {
-  return api.post('api/register', data);
+  return api.post('register', data);
 }
 
 export function getProfile() {
-  return api.get('api/me');
+  return api.get('me');
 }
 
 export function logout() {
-  return api.get('api/logout');
+  return api.get('logout');
 }

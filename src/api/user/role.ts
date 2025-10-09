@@ -1,25 +1,25 @@
 import api from '@/api/admin/axiosClient';
 
 export function getRoles(params: object) {
-  return api.get('api/roles', { params: params});
+  return api.get('roles', { params: params});
 }
 
 export function getAll() {
-  return api.get('api/roles/all');
+  return api.get('roles/all');
 }
 
 export function getRole(id: number) {
-  return api.get(`api/roles/${id}`);
+  return api.get(`roles/${id}`);
 }
 
 export function createRole(data: object) {
-  return api.post('api/roles', data);
+  return api.post('roles', data);
 }
 
 export function updateRole(id: number, data: object) {
-  return api.put(`api/roles/${id}`, data);
+  return api.put(`roles/${id}`, data);
 }
 
 export function deleteRole(id: number) {
-  return api.delete(`api/roles/${id}`);
+  return api.delete(`roles/${id}`);
 }
